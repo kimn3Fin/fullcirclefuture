@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PFAS in Landfill Leachate — Full Circle Future</title>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;600&display=swap" rel="stylesheet">
+<style>
+  /* FCF brand colors */
+  :root {
+    --fcf-dark-purple: #2a1d3d;
+    --fcf-off-white: #f4efe9;
+    --fcf-yellow: #f4bd42;
+    --fcf-red: #e6674f;
+    --fcf-dark-blue: #294480;
+    --fcf-green: #0a8574;
+    --fcf-light-blue: #91c8e4;
+    --fcf-pink: #e7b4d0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Alexandria', sans-serif;
+    background: var(--fcf-dark-purple);
+    color: var(--fcf-off-white);
+    padding: 2.5rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Brand mark icon SVG inline top-right */
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.75rem;
+  }
+
+  .header-text { flex: 1; }
+
+  .brand-mark {
+    flex-shrink: 0;
+    margin-left: 2rem;
+    opacity: 0.18;
+    width: 60px;
+  }
+
+  h1 {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.15;
+    color: var(--fcf-off-white);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0;
+  }
+
+  h1 span { color: var(--fcf-yellow); }
+
+  .subhead {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: var(--fcf-off-white);
+    opacity: 0.75;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+    max-width: 620px;
+  }
+
+  /* Stat cards */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 1.75rem;
+  }
+
+  .stat-card {
+    background: rgba(244,239,233,0.07);
+    border: 1px solid rgba(244,239,233,0.15);
+    border-radius: 8px;
+    padding: 1rem 1rem 0.9rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--fcf-yellow);
+  }
+
+  .stat-card.danger::before { background: var(--fcf-red); }
+
+  .stat-label {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fcf-off-white);
+    opacity: 0.55;
+    margin-bottom: 6px;
+  }
+
+  .stat-val {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--fcf-yellow);
+    margin-bottom: 4px;
+    line-height: 1.1;
+  }
+
+  .stat-card.danger .stat-val { color: var(--fcf-red); }
+
+  .stat-sub {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    color: var(--fcf-off-white);
+    opacity: 0.55;
+    line-height: 1.4;
+  }
+
+  /* Chart */
+  .chart-label {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fcf-off-white);
+    opacity: 0.5;
+    margin-bottom: 10px;
+  }
+
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+    height: 300px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    margin-top: 12px;
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    color: var(--fcf-off-white);
+    opacity: 0.65;
+    flex-wrap: wrap;
+  }
+
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; flex-shrink: 0; }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid rgba(244,239,233,0.12);
+    margin: 1.5rem 0 1.2rem;
+  }
+
+  /* Note */
+  .note {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    color: var(--fcf-off-white);
+    opacity: 0.6;
+    line-height: 1.6;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .note-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    background: var(--fcf-yellow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 10px;
+    color: var(--fcf-dark-purple);
+    margin-top: 1px;
+    opacity: 1;
+  }
+
+  /* Sources */
+  .sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 1rem;
+  }
+
+  .tag {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 300;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--fcf-dark-purple);
+    background: rgba(244,189,66,0.85);
+    border-radius: 3px;
+    padding: 3px 8px;
+  }
+
+  @media (max-width: 600px) {
+    .stat-row { grid-template-columns: 1fr; }
+    .header-row { flex-direction: column; }
+    .brand-mark { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header-row">
+  <div class="header-text">
+    <h1>PFAS are found at <span>extreme concentrations</span><br>in landfill leachate — everywhere</h1>
+    <p class="subhead">Measurements from landfills across the U.S. consistently show leachate concentrations thousands of times above safe drinking water limits — in every region, in every study.</p>
+  </div>
+  <!-- FCF brand mark watermark -->
+  <svg class="brand-mark" viewBox="0 0 120 150" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="60" cy="52" r="42" fill="#f4efe9"/>
+    <rect x="10" y="108" width="100" height="16" rx="3" fill="#f4efe9"/>
+    <rect x="10" y="132" width="100" height="16" rx="3" fill="#f4efe9"/>
+  </svg>
+</div>
+
+<div class="stat-row">
+  <div class="stat-card">
+    <p class="stat-label">Typical MSW leachate</p>
+    <p class="stat-val">10,000 ng/L</p>
+    <p class="stat-sub">median total PFAS<br>(Chen et al. 2023)</p>
+  </div>
+  <div class="stat-card danger">
+    <p class="stat-label">Peak measured — Dunn, NY</p>
+    <p class="stat-val">190,000 ppt</p>
+    <p class="stat-sub">PFOA alone — 19,000× NY's drinking water limit</p>
+  </div>
+  <div class="stat-card">
+    <p class="stat-label">National release to WWTPs</p>
+    <p class="stat-val">~600 kg/yr</p>
+    <p class="stat-sub">PFAS from U.S. landfill leachate<br>(Lang et al. 2017)</p>
+  </div>
+</div>
+
+<p class="chart-label">Total PFAS in leachate vs. drinking water limits (ng/L, log scale)</p>
+<div class="chart-wrap">
+  <canvas id="chart" role="img" aria-label="Log scale bar chart showing PFAS concentrations in landfill leachate across multiple U.S. regions are thousands to hundreds of thousands of ng/L, versus EPA and NY drinking water limits of 0.02 to 10 ng/L.">
+    Drinking water limits: EPA 0.02 ng/L; NY state 10 ng/L. Measured leachate: WA State low 61 ng/L; FL/PA/CO avg 6,900 ng/L; Puerto Rico low 11,200 ng/L; WA State high 172,976 ng/L; Dunn NY PFOA only 190,000 ng/L.
+  </canvas>
+</div>
+<div class="legend">
+  <span><span class="swatch" style="background:#f4bd42;"></span>Leachate (measured)</span>
+  <span><span class="swatch" style="background:#e6674f;"></span>Drinking water limit</span>
+</div>
+
+<hr class="divider">
+
+<div class="note">
+  <span class="note-icon" aria-hidden="true">!</span>
+  <span>Standard wastewater treatment cannot remove PFAS — leachate contamination passes through to rivers intact. In some cases it actually raises PFAS levels in treated effluent above incoming sewage levels. (Beyond Toxics / High Country News 2025; Chen et al. 2023)</span>
+</div>
+
+<div class="sources">
+  <span class="tag">Lang et al. 2017 · Env. Sci. &amp; Tech.</span>
+  <span class="tag">Chen et al. 2023 · Chemosphere</span>
+  <span class="tag">Solo-Gabriele et al. 2020</span>
+  <span class="tag">Dunn Landfill / PEER 2022</span>
+  <span class="tag">Beyond Toxics / HCN 2025</span>
+  <span class="tag">NY DEC 2025</span>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const labels = [
+  ['EPA MCL', '(PFOA/PFOS)'],
+  ['NY drinking', 'water limit'],
+  ['WA State', 'landfills (low)'],
+  ['FL / PA / CO', 'landfills (avg)'],
+  ['Puerto Rico', 'MSW (low)'],
+  ['WA State', 'landfills (high)'],
+  ['Dunn, NY', '(PFOA only)']
+];
+const values = [0.02, 10, 61, 6900, 11200, 172976, 190000];
+const isLimit = [true, true, false, false, false, false, false];
+const bgColors = values.map((v, i) => isLimit[i] ? '#e6674f' : '#f4bd42');
+const bdColors = values.map((v, i) => isLimit[i] ? '#b84030' : '#c49030');
+
+new Chart(document.getElementById('chart'), {
+  type: 'bar',
+  data: {
+    labels: labels,
+    datasets: [{
+      data: values,
+      backgroundColor: bgColors,
+      borderColor: bdColors,
+      borderWidth: 1,
+      borderRadius: 3
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#2a1d3d',
+        borderColor: 'rgba(244,239,233,0.2)',
+        borderWidth: 1,
+        titleColor: '#f4efe9',
+        bodyColor: '#f4bd42',
+        callbacks: {
+          label: ctx => {
+            const v = ctx.parsed.y;
+            if (v < 1) return ' ' + v + ' ng/L';
+            return ' ' + v.toLocaleString() + ' ng/L';
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          font: { family: 'Alexandria', size: 11 },
+          color: 'rgba(244,239,233,0.55)',
+          autoSkip: false,
+          maxRotation: 0
+        },
+        grid: { display: false },
+        border: { color: 'rgba(244,239,233,0.15)' }
+      },
+      y: {
+        type: 'logarithmic',
+        min: 0.01,
+        ticks: {
+          font: { family: 'Alexandria', size: 11 },
+          color: 'rgba(244,239,233,0.45)',
+          callback: v => {
+            const marks = [0.01, 0.1, 1, 10, 100, 1000, 10000, 100000, 1000000];
+            if (marks.includes(v)) {
+              if (v >= 1000) return (v / 1000) + 'k';
+              return v;
+            }
+            return null;
+          }
+        },
+        grid: { color: 'rgba(244,239,233,0.07)' },
+        border: { color: 'rgba(244,239,233,0.15)' },
+        title: {
+          display: true,
+          text: 'ng/L (log scale)',
+          font: { family: 'Alexandria', size: 10 },
+          color: 'rgba(244,239,233,0.4)'
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>

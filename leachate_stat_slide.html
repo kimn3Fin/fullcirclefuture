@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leachate Volume — Full Circle Future</title>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #2a1d3d;
+    --off-white: #f4efe9;
+    --yellow: #f4bd42;
+    --red: #e6674f;
+    --light-blue: #91c8e4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Alexandria', sans-serif;
+    background: var(--purple);
+    color: #f4efe9;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .wrapper {
+    width: 100%;
+    max-width: 780px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* ── INTRO TEXT ── */
+  .intro {
+    font-size: clamp(18px, 2.8vw, 26px);
+    font-weight: 300;
+    line-height: 1.65;
+    color: #f4efe9;
+    max-width: 680px;
+  }
+
+  .intro strong {
+    font-weight: 600;
+    color: var(--red);
+  }
+
+  /* ── COUNTER ── */
+  .counter-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .counter-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(244,239,233,0.35);
+  }
+
+  .counter-number {
+    font-size: clamp(48px, 9vw, 96px);
+    font-weight: 600;
+    color: var(--yellow);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    min-width: 14ch;
+    display: inline-block;
+  }
+
+  .counter-unit {
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 300;
+    color: rgba(244,239,233,0.5);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── POOL BAR ── */
+  .pool-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .pool-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(244,239,233,0.3);
+  }
+
+  .pools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    justify-content: center;
+  }
+
+  .pool {
+    width: 16px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--light-blue);
+    opacity: 0;
+    animation: poolFade 0.04s ease both;
+  }
+
+  @keyframes poolFade {
+    to { opacity: 0.55; }
+  }
+
+  .pool.partial { opacity: 0; animation: poolFade 0.04s ease both; filter: brightness(0.4); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <p class="intro">
+    In 2024, <strong>36</strong> wastewater treatment plants processed more than
+    <strong>1 million gallons</strong> of PFAS-laden leachate
+    <strong>every single day</strong> — all year long.
+    That's just what we know of.
+  </p>
+
+  <div class="counter-wrap">
+    <p class="counter-label">Total gallons discharged · 2024</p>
+    <span class="counter-number" id="counter">0</span>
+    <p class="counter-unit">gallons of PFAS-laden leachate</p>
+  </div>
+
+  <div class="pool-section">
+    <p class="pool-label">Each square = 1 Olympic swimming pool (660,000 gal)</p>
+    <div class="pools" id="pools"></div>
+  </div>
+
+</div>
+
+<script>
+  // ── COUNTER ──
+  const target = 384087821;
+  const duration = 3000;
+  const start = performance.now();
+  const el = document.getElementById('counter');
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function formatNum(n) {
+    return Math.floor(n).toLocaleString('en-US');
+  }
+
+  function tick(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const value = easeOut(progress) * target;
+    el.textContent = formatNum(value);
+    if (progress < 1) requestAnimationFrame(tick);
+    else el.textContent = formatNum(target);
+  }
+
+  requestAnimationFrame(tick);
+
+  // ── POOLS ──
+  const poolSize = 660000;
+  const totalPools = Math.floor(target / poolSize);
+  const container = document.getElementById('pools');
+
+  for (let i = 0; i < totalPools; i++) {
+    const d = document.createElement('div');
+    d.className = 'pool';
+    d.style.animationDelay = (i * 5) + 'ms';
+    container.appendChild(d);
+  }
+  const partial = document.createElement('div');
+  partial.className = 'pool partial';
+  partial.style.animationDelay = (totalPools * 5) + 'ms';
+  container.appendChild(partial);
+</script>
+</body>
+</html>

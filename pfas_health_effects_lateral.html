@@ -22,22 +22,21 @@
     font-family: 'Alexandria', sans-serif;
     background: var(--purple);
     color: var(--off-white);
+    width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 1.5rem;
   }
 
-  /* ── HEADER ROW ── */
   .header-row {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     width: 100%;
-    max-width: 900px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
   }
 
   .label {
@@ -56,79 +55,94 @@
     text-transform: uppercase;
   }
 
-  /* ── MAIN LAYOUT: torso centre, effect cards flanking ── */
+  /* ── MAIN LAYOUT ── */
   .layout {
     display: grid;
-    grid-template-columns: 1fr 260px 1fr;
-    gap: 0 1.5rem;
+    grid-template-columns: 200px 1fr 200px;
+    gap: 0 1rem;
     width: 100%;
-    max-width: 900px;
-    align-items: center;
+    align-items: start;
   }
 
-  /* left & right card columns */
+  /* side card columns */
   .col {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 7px;
+    padding-top: 60px;
   }
 
-  .col.right { align-items: flex-start; }
-  .col.left  { align-items: flex-end; }
-
-  /* effect cards — static, always visible */
   .card {
-    background: rgba(244,239,233,0.05);
-    border-radius: 7px;
-    padding: 9px 12px;
+    background: rgba(244,239,233,0.06);
+    border-radius: 6px;
+    padding: 8px 11px;
     width: 100%;
-    max-width: 230px;
-    border-left: 3px solid transparent;
-    position: relative;
   }
 
-  .col.left .card {
-    border-left: none;
-    border-right: 3px solid transparent;
-    text-align: right;
-  }
+  .col.left .card  { border-right: 3px solid transparent; text-align: right; }
+  .col.right .card { border-left: 3px solid transparent; }
 
   .card-title {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
-    color: var(--off-white);
     margin-bottom: 3px;
     line-height: 1.2;
   }
 
   .card-body {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 300;
     color: rgba(244,239,233,0.55);
     line-height: 1.45;
   }
 
-  /* connector line from card to figure — drawn in SVG overlay */
-  /* ── FIGURE ── */
-  .figure-wrap {
+  /* ── CENTRE: torso + overlaid text ── */
+  .centre {
     position: relative;
-    width: 260px;
-    height: 420px;
+    width: 100%;
   }
 
-  .body-svg {
+  .torso-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* gradient fade over lower torso */
+  .text-overlay {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    overflow: visible;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(42,29,61,0) 0%,
+      rgba(42,29,61,0.82) 30%,
+      rgba(42,29,61,0.97) 60%,
+      rgba(42,29,61,1) 100%
+    );
+    padding: 3rem 1.25rem 1.25rem;
+    border-radius: 0 0 8px 8px;
   }
 
-  /* hotspot dots on the figure */
+  .overlay-text {
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(244,239,233,0.8);
+    line-height: 1.65;
+  }
+
+  .overlay-text strong {
+    font-weight: 600;
+    color: var(--red);
+  }
+
+  /* hotspot dots */
   .hotspot {
     position: absolute;
     transform: translate(-50%, -50%);
     z-index: 10;
-    cursor: default;
+    cursor: pointer;
   }
 
   .dot {
@@ -137,7 +151,10 @@
     border-radius: 50%;
     border: 2px solid var(--purple);
     position: relative;
+    transition: transform 0.15s;
   }
+
+  .hotspot:hover .dot { transform: scale(1.4); }
 
   .dot::after {
     content: '';
@@ -155,28 +172,36 @@
     100% { transform: scale(2.2); opacity: 0; }
   }
 
-  /* ── BOTTOM NOTE ── */
-  .bottom-note {
-    margin-top: 1.1rem;
-    width: 100%;
-    max-width: 900px;
-    background: rgba(230,103,79,0.09);
-    border: 1px solid rgba(230,103,79,0.22);
-    border-radius: 8px;
-    padding: 9px 16px;
-    font-size: 11.5px;
+  /* popups */
+  .popup {
+    position: absolute;
+    background: #1a1028;
+    border: 1px solid rgba(244,239,233,0.18);
+    border-radius: 7px;
+    padding: 9px 12px;
+    width: 160px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.18s;
+    z-index: 30;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    font-size: 11px;
     font-weight: 300;
-    color: rgba(244,239,233,0.65);
-    line-height: 1.6;
-    text-align: center;
+    color: rgba(244,239,233,0.7);
+    line-height: 1.5;
   }
-  .bottom-note strong { font-weight: 600; color: var(--red); }
 
-  @media (max-width: 680px) {
-    .layout { grid-template-columns: 1fr; }
-    .figure-wrap { margin: 0 auto; }
-    .col.left, .col.right { align-items: flex-start; }
-    .col.left .card { border-left: 3px solid transparent; border-right: none; text-align: left; }
+  .hotspot:hover .popup { opacity: 1; }
+
+  .popup.left  { right: 18px; top: 50%; transform: translateY(-50%); }
+  .popup.right { left: 18px;  top: 50%; transform: translateY(-50%); }
+  .popup.above { bottom: 18px; left: 50%; transform: translateX(-50%); }
+
+  .popup-title {
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 3px;
+    line-height: 1.2;
   }
 </style>
 </head>
@@ -189,141 +214,157 @@
 
 <div class="layout">
 
-  <!-- LEFT CARDS: thyroid, heart/cholesterol, immune -->
+  <!-- LEFT CARDS -->
   <div class="col left">
-
     <div class="card" style="border-right-color:#91c8e4;">
       <p class="card-title" style="color:#91c8e4;">Thyroid disruption</p>
       <p class="card-body">Interferes with hormone production, affecting metabolism, energy, and growth</p>
     </div>
-
     <div class="card" style="border-right-color:#e6674f;">
       <p class="card-title" style="color:#e6674f;">Higher cholesterol</p>
       <p class="card-body">Linked to elevated LDL cholesterol and increased cardiovascular disease risk</p>
     </div>
-
     <div class="card" style="border-right-color:#0a8574;">
       <p class="card-title" style="color:#0a8574;">Immune suppression</p>
       <p class="card-body">Reduces vaccine effectiveness and weakens the body's ability to fight infection</p>
     </div>
-
   </div>
 
-  <!-- CENTRE FIGURE -->
-  <div class="figure-wrap">
-    <svg class="body-svg" viewBox="0 0 260 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- CENTRE TORSO -->
+  <div class="centre">
+
+    <svg class="torso-svg" viewBox="0 0 300 480" fill="none" xmlns="http://www.w3.org/2000/svg">
 
       <!-- neck -->
-      <path d="M112 8 Q109 24 108 40 L152 40 Q151 24 148 8 Z"
+      <path d="M128 10 Q124 30 122 48 L178 48 Q176 30 172 10 Z"
             stroke="rgba(244,239,233,0.22)" stroke-width="1.4" fill="rgba(244,239,233,0.03)"/>
-      <!-- torso + shoulders -->
-      <path d="M108 40 Q86 44 68 58 Q50 74 46 100 L44 158 Q43 174 48 182 L48 346 Q48 358 60 358 L200 358 Q212 358 212 346 L212 182 Q217 174 216 158 L214 100 Q206 74 188 58 Q170 44 152 40 Z"
+      <!-- torso -->
+      <path d="M122 48 Q96 52 74 68 Q52 86 48 114 L46 172 Q44 188 50 198 L50 400 Q50 414 64 414 L236 414 Q250 414 250 400 L250 198 Q256 188 254 172 L252 114 Q248 86 226 68 Q204 52 178 48 Z"
             stroke="rgba(244,239,233,0.28)" stroke-width="1.4" fill="rgba(244,239,233,0.04)"/>
       <!-- collarbone -->
-      <path d="M108 48 Q130 54 152 48" stroke="rgba(244,239,233,0.12)" stroke-width="1" fill="none"/>
+      <path d="M122 56 Q150 63 178 56" stroke="rgba(244,239,233,0.12)" stroke-width="1" fill="none"/>
 
       <!-- Thyroid -->
-      <g opacity="0.9">
-        <ellipse cx="120" cy="55" rx="10" ry="7" fill="rgba(145,200,228,0.15)" stroke="#91c8e4" stroke-width="1.2"/>
-        <ellipse cx="140" cy="55" rx="10" ry="7" fill="rgba(145,200,228,0.15)" stroke="#91c8e4" stroke-width="1.2"/>
-        <line x1="130" y1="55" x2="130" y2="55" stroke="#91c8e4" stroke-width="1" opacity="0.5"/>
-      </g>
+      <ellipse cx="137" cy="63" rx="11" ry="8" fill="rgba(145,200,228,0.15)" stroke="#91c8e4" stroke-width="1.2"/>
+      <ellipse cx="159" cy="63" rx="11" ry="8" fill="rgba(145,200,228,0.15)" stroke="#91c8e4" stroke-width="1.2"/>
 
       <!-- Trachea + bronchi -->
-      <line x1="130" y1="40" x2="130" y2="98" stroke="rgba(145,200,228,0.25)" stroke-width="1.8"/>
-      <path d="M130 98 Q114 102 82 108" stroke="rgba(145,200,228,0.2)" stroke-width="1.3" fill="none"/>
-      <path d="M130 98 Q146 102 174 108" stroke="rgba(145,200,228,0.2)" stroke-width="1.3" fill="none"/>
+      <line x1="150" y1="48" x2="150" y2="112" stroke="rgba(145,200,228,0.22)" stroke-width="1.8"/>
+      <path d="M150 112 Q130 116 92 122" stroke="rgba(145,200,228,0.18)" stroke-width="1.3" fill="none"/>
+      <path d="M150 112 Q170 116 202 122" stroke="rgba(145,200,228,0.18)" stroke-width="1.3" fill="none"/>
 
       <!-- Lungs -->
-      <path d="M72 108 Q60 114 58 136 Q56 158 62 178 Q66 190 76 191 Q86 191 88 178 L91 148 Q90 122 80 108 Z"
-            fill="rgba(145,200,228,0.08)" stroke="rgba(145,200,228,0.4)" stroke-width="1.1"/>
-      <path d="M174 108 Q186 114 188 136 Q190 158 184 178 Q180 190 170 191 Q160 191 158 178 L155 148 Q156 122 166 108 Z"
-            fill="rgba(145,200,228,0.08)" stroke="rgba(145,200,228,0.4)" stroke-width="1.1"/>
+      <path d="M84 122 Q70 128 68 152 Q66 175 72 196 Q77 208 88 209 Q100 209 102 196 L105 162 Q104 136 94 122 Z"
+            fill="rgba(145,200,228,0.08)" stroke="rgba(145,200,228,0.38)" stroke-width="1.1"/>
+      <path d="M202 122 Q216 128 218 152 Q220 175 214 196 Q209 208 198 209 Q186 209 184 196 L181 162 Q182 136 192 122 Z"
+            fill="rgba(145,200,228,0.08)" stroke="rgba(145,200,228,0.38)" stroke-width="1.1"/>
 
       <!-- Heart -->
-      <path d="M108 108 Q108 95 118 95 Q126 95 122 103 Q118 95 132 95 Q142 95 138 108 Q134 121 122 130 Q110 121 108 108 Z"
-            fill="rgba(230,103,79,0.18)" stroke="#e6674f" stroke-width="1.3"/>
+      <path d="M124 122 Q124 108 135 108 Q144 108 140 117 Q136 108 150 108 Q162 108 158 122 Q154 136 142 146 Q130 136 124 122 Z"
+            fill="rgba(230,103,79,0.2)" stroke="#e6674f" stroke-width="1.3"/>
 
       <!-- Liver -->
-      <path d="M136 158 Q164 154 178 174 Q183 190 176 208 Q168 220 150 222 Q134 222 128 208 Q122 192 126 172 Q128 160 136 158 Z"
+      <path d="M158 172 Q190 168 206 190 Q212 208 204 228 Q195 242 173 244 Q155 244 148 228 Q141 210 146 188 Q148 174 158 172 Z"
             fill="rgba(244,189,66,0.13)" stroke="#f4bd42" stroke-width="1.2"/>
 
       <!-- Stomach -->
-      <path d="M96 165 Q86 165 82 179 Q79 193 86 205 Q93 215 106 214 Q119 213 121 199 Q124 184 115 171 Q108 163 96 165 Z"
-            fill="rgba(244,189,66,0.07)" stroke="rgba(244,189,66,0.35)" stroke-width="1"/>
+      <path d="M112 178 Q100 178 96 193 Q93 208 100 221 Q108 232 122 231 Q136 230 138 215 Q141 199 131 185 Q123 176 112 178 Z"
+            fill="rgba(244,189,66,0.07)" stroke="rgba(244,189,66,0.32)" stroke-width="1"/>
 
       <!-- Kidneys -->
-      <ellipse cx="100" cy="256" rx="13" ry="19" fill="rgba(230,103,79,0.09)" stroke="rgba(230,103,79,0.45)" stroke-width="1"/>
-      <ellipse cx="160" cy="256" rx="13" ry="19" fill="rgba(230,103,79,0.09)" stroke="rgba(230,103,79,0.45)" stroke-width="1"/>
-      <!-- spine -->
-      <line x1="130" y1="228" x2="130" y2="288" stroke="rgba(244,239,233,0.08)" stroke-width="3"/>
+      <ellipse cx="116" cy="286" rx="14" ry="20" fill="rgba(230,103,79,0.09)" stroke="rgba(230,103,79,0.42)" stroke-width="1"/>
+      <ellipse cx="184" cy="286" rx="14" ry="20" fill="rgba(230,103,79,0.09)" stroke="rgba(230,103,79,0.42)" stroke-width="1"/>
+      <line x1="150" y1="260" x2="150" y2="318" stroke="rgba(244,239,233,0.07)" stroke-width="3"/>
 
       <!-- Immune nodes -->
-      <circle cx="68" cy="148" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
-      <circle cx="192" cy="148" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
-      <circle cx="62" cy="210" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
-      <circle cx="198" cy="210" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+      <circle cx="72" cy="164" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+      <circle cx="228" cy="164" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+      <circle cx="66" cy="228" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+      <circle cx="234" cy="228" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
 
       <!-- Pregnant belly -->
-      <path d="M92 296 Q82 298 78 316 Q75 334 86 348 Q100 360 130 362 Q160 360 174 348 Q185 334 182 316 Q178 298 168 296 Q152 292 130 292 Q108 292 92 296 Z"
+      <path d="M106 330 Q94 332 88 352 Q84 374 96 390 Q112 406 150 408 Q188 406 204 390 Q216 374 212 352 Q206 332 194 330 Q174 326 150 326 Q126 326 106 330 Z"
             fill="rgba(231,180,208,0.12)" stroke="#e7b4d0" stroke-width="1.3"/>
-      <ellipse cx="130" cy="308" rx="4" ry="2.5" stroke="rgba(231,180,208,0.35)" stroke-width="1" fill="none"/>
-      <circle cx="130" cy="330" r="15" fill="rgba(231,180,208,0.06)" stroke="rgba(231,180,208,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
-      <circle cx="130" cy="330" r="7" fill="rgba(231,180,208,0.12)" stroke="rgba(231,180,208,0.28)" stroke-width="1"/>
+      <ellipse cx="150" cy="345" rx="4.5" ry="3" stroke="rgba(231,180,208,0.35)" stroke-width="1" fill="none"/>
+      <circle cx="150" cy="370" r="17" fill="rgba(231,180,208,0.06)" stroke="rgba(231,180,208,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+      <circle cx="150" cy="370" r="8" fill="rgba(231,180,208,0.13)" stroke="rgba(231,180,208,0.3)" stroke-width="1"/>
 
     </svg>
 
-    <!-- hotspot dots -->
-    <!-- thyroid -->
-    <div class="hotspot" style="left:130px; top:55px;">
+    <!-- gradient + text overlay -->
+    <div class="text-overlay">
+      <p class="overlay-text">
+        PFAS doesn't break down in nature on any human timescale — it builds up in the body over years of low-level exposure. The EPA set its first enforceable limit in 2024 at just <strong>4 parts per trillion</strong>, yet some states and scientists conclude there is no truly safe level of exposure.
+      </p>
+    </div>
+
+    <!-- hotspot dots positioned over SVG -->
+    <div class="hotspot" style="left:50%; top:13%;">
       <div class="dot" style="background:#91c8e4; color:#91c8e4;"></div>
+      <div class="popup above" style="border-top:2px solid #91c8e4;">
+        <p class="popup-title" style="color:#91c8e4;">Thyroid disruption</p>
+        Interferes with hormone production, affecting metabolism and growth
+      </div>
     </div>
-    <!-- heart -->
-    <div class="hotspot" style="left:100px; top:108px;">
+
+    <div class="hotspot" style="left:38%; top:26%;">
       <div class="dot" style="background:#e6674f; color:#e6674f;"></div>
+      <div class="popup left" style="border-top:2px solid #e6674f;">
+        <p class="popup-title" style="color:#e6674f;">Higher cholesterol</p>
+        Linked to elevated LDL and increased cardiovascular disease risk
+      </div>
     </div>
-    <!-- liver -->
-    <div class="hotspot" style="left:162px; top:185px;">
+
+    <div class="hotspot" style="left:66%; top:40%;">
       <div class="dot" style="background:#f4bd42; color:#f4bd42;"></div>
+      <div class="popup right" style="border-top:2px solid #f4bd42;">
+        <p class="popup-title" style="color:#f4bd42;">Liver & cancer risk</p>
+        Linked to liver damage and elevated kidney and testicular cancer risk
+      </div>
     </div>
-    <!-- immune -->
-    <div class="hotspot" style="left:62px; top:210px;">
+
+    <div class="hotspot" style="left:26%; top:44%;">
       <div class="dot" style="background:#0a8574; color:#0a8574;"></div>
+      <div class="popup left" style="border-top:2px solid #0a8574;">
+        <p class="popup-title" style="color:#0a8574;">Immune suppression</p>
+        Reduces vaccine effectiveness and weakens infection response
+      </div>
     </div>
-    <!-- kidneys -->
-    <div class="hotspot" style="left:162px; top:256px;">
+
+    <div class="hotspot" style="left:65%; top:58%;">
       <div class="dot" style="background:#e6674f; color:#e6674f;"></div>
+      <div class="popup right" style="border-top:2px solid #e6674f;">
+        <p class="popup-title" style="color:#e6674f;">Kidney damage</p>
+        Associated with chronic kidney disease and significantly elevated cancer risk
+      </div>
     </div>
-    <!-- pregnancy -->
-    <div class="hotspot" style="left:130px; top:348px;">
+
+    <div class="hotspot" style="left:50%; top:80%;">
       <div class="dot" style="background:#e7b4d0; color:#e7b4d0;"></div>
+      <div class="popup above" style="border-top:2px solid #e7b4d0;">
+        <p class="popup-title" style="color:#e7b4d0;">Pregnancy & fetal harm</p>
+        Crosses the placenta, appears in breast milk — linked to low birth weight and preeclampsia
+      </div>
     </div>
+
   </div>
 
-  <!-- RIGHT CARDS: liver/cancer, kidneys, pregnancy -->
+  <!-- RIGHT CARDS -->
   <div class="col right">
-
     <div class="card" style="border-left-color:#f4bd42;">
       <p class="card-title" style="color:#f4bd42;">Liver & cancer risk</p>
       <p class="card-body">Linked to liver damage and increased risk of kidney and testicular cancers</p>
     </div>
-
     <div class="card" style="border-left-color:#e6674f;">
       <p class="card-title" style="color:#e6674f;">Kidney damage</p>
       <p class="card-body">Associated with chronic kidney disease and significantly elevated kidney cancer risk</p>
     </div>
-
     <div class="card" style="border-left-color:#e7b4d0;">
       <p class="card-title" style="color:#e7b4d0;">Pregnancy & fetal harm</p>
       <p class="card-body">Crosses the placenta and appears in breast milk — linked to low birth weight, preeclampsia, and disrupted fetal development</p>
     </div>
-
   </div>
 
-</div>
-
-<div class="bottom-note">
-  The EPA set its first enforceable PFAS limit in 2024 at <strong>4 parts per trillion</strong> — one of the lowest limits ever set for any drinking water contaminant, yet some states and scientists conclude there is no truly safe level of exposure.
 </div>
 
 </body>

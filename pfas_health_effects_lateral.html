@@ -58,7 +58,7 @@
   /* ── MAIN LAYOUT ── */
   .layout {
     display: grid;
-    grid-template-columns: 200px 1fr 200px;
+    grid-template-columns: 200px minmax(260px, 340px) 200px;
     gap: 0 1rem;
     width: 100%;
     align-items: start;
@@ -100,12 +100,14 @@
   .centre {
     position: relative;
     width: 100%;
+    min-width: 260px;
   }
 
   .torso-svg {
     display: block;
     width: 100%;
     height: auto;
+    min-height: 300px;
   }
 
   /* gradient fade over lower torso */
@@ -291,12 +293,7 @@
 
     </svg>
 
-    <!-- gradient + text overlay -->
-    <div class="text-overlay">
-      <p class="overlay-text">
-        PFAS doesn't break down in nature on any human timescale — it builds up in the body over years of low-level exposure. The EPA set its first enforceable limit in 2024 at just <strong>4 parts per trillion</strong>, yet some states and scientists conclude there is no truly safe level of exposure.
-      </p>
-    </div>
+
 
     <!-- hotspot dots positioned over SVG -->
     <div class="hotspot" style="left:50%; top:13%;">

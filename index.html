@@ -20,18 +20,19 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body {
-  height: 600px;
-  overflow: hidden;
-  }
+  html, body { height: 100%; }
 
   body {
     font-family: 'Alexandria', sans-serif;
     background: var(--fcf-dark-purple);
     color: var(--fcf-off-white);
-    padding: 2.5rem 2rem;
+    padding: 1rem 1.25rem;
     max-width: 100%;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto;
   }
 
   /* Brand mark icon SVG inline top-right */
@@ -39,7 +40,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 1.75rem;
+    margin-bottom: 0.75rem;
   }
 
   .header-text { flex: 1; }
@@ -70,7 +71,7 @@
     color: var(--fcf-off-white);
     opacity: 0.75;
     line-height: 1.6;
-    margin-bottom: 1.75rem;
+    margin-bottom: 0.75rem;
     max-width: 620px;
   }
 
@@ -79,14 +80,14 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    margin-bottom: 1.75rem;
+    margin-bottom: 0.75rem;
   }
 
   .stat-card {
     background: rgba(244,239,233,0.07);
     border: 1px solid rgba(244,239,233,0.15);
     border-radius: 8px;
-    padding: 1rem 1rem 0.9rem;
+    padding: 0.6rem 0.8rem;
     position: relative;
     overflow: hidden;
   }
@@ -115,7 +116,7 @@
   .stat-val {
     font-family: 'Alexandria', sans-serif;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 20px;
     color: var(--fcf-yellow);
     margin-bottom: 4px;
     line-height: 1.1;
@@ -147,7 +148,7 @@
   .chart-wrap {
     position: relative;
     width: 100%;
-    height: 300px;
+    height: 220px;
   }
 
   .legend {
@@ -169,7 +170,7 @@
   .divider {
     border: none;
     border-top: 1px solid rgba(244,239,233,0.12);
-    margin: 1.5rem 0 1.2rem;
+    margin: 0.75rem 0 0.6rem;
   }
 
   /* Note */
@@ -206,7 +207,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin-top: 1rem;
+    margin-top: 0.6rem;
   }
 
   .tag {
@@ -218,6 +219,12 @@
     background: rgba(244,189,66,0.85);
     border-radius: 3px;
     padding: 3px 8px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .tag:hover {
+    background: rgba(244,189,66,1);
   }
 
   @media (max-width: 600px) {
@@ -266,12 +273,12 @@
 </div>
 
 <div class="sources">
-  <span class="tag">Lang et al. 2017 · Env. Sci. &amp; Tech.</span>
-  <span class="tag">Chen et al. 2023 · Chemosphere</span>
-  <span class="tag">Solo-Gabriele et al. 2020</span>
-  <span class="tag">Dunn Landfill / PEER 2022</span>
-  <span class="tag">Beyond Toxics / HCN 2025</span>
-  <span class="tag">NY DEC 2025</span>
+  <a class="tag" href="https://pubs.acs.org/doi/10.1021/acs.est.6b05005" target="_blank" rel="noopener">Lang et al. 2017 · Env. Sci. &amp; Tech.</a>
+  <a class="tag" href="https://www.sciencedirect.com/science/article/abs/pii/S0045653523001704" target="_blank" rel="noopener">Chen et al. 2023 · Chemosphere</a>
+  <a class="tag" href="https://www.sciencedirect.com/science/article/abs/pii/S0956053X20301458" target="_blank" rel="noopener">Solo-Gabriele et al. 2020</a>
+  <a class="tag" href="https://peer.org/blog-dunn-landfills-environmental-injustice/" target="_blank" rel="noopener">Dunn Landfill / PEER 2022</a>
+  <a class="tag" href="https://www.hcn.org/issues/57-6/where-the-garbage-goes/" target="_blank" rel="noopener">Beyond Toxics / HCN 2025</a>
+  <a class="tag" href="https://extapps.dec.ny.gov/docs/materials_minerals_pdf/inactivelandfillreportfinal202207.pdf" target="_blank" rel="noopener">NY DEC 2022</a>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>

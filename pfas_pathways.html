@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PFAS Pathways — Full Circle Future</title>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #f4ede0; }
+  body { display: flex; height: 100%; font-family: 'Alexandria', sans-serif; }
+
+  /* ── LEFT DRAWER (gas) ── */
+  .drawer-left {
+    width: 0; overflow: hidden;
+    transition: width 0.4s ease;
+    background: #f0d8e8;
+    border-right: 3px solid #c97aaa;
+    display: flex; flex-direction: column; justify-content: center;
+    flex-shrink: 0; position: relative; z-index: 10;
+  }
+  .drawer-left.open { width: 280px; }
+  .drawer-left .inner {
+    padding: 1.4rem 1.2rem; opacity: 0;
+    transition: opacity 0.25s ease 0.2s; min-width: 280px;
+  }
+  .drawer-left.open .inner { opacity: 1; }
+
+  /* ── RIGHT DRAWER (leachate) ── */
+  .drawer-right {
+    width: 0; overflow: hidden;
+    transition: width 0.4s ease;
+    background: #d4eef8;
+    border-left: 3px solid #5BA8CC;
+    display: flex; flex-direction: column; justify-content: center;
+    flex-shrink: 0; position: relative; z-index: 10;
+  }
+  .drawer-right.open { width: 280px; }
+  .drawer-right .inner {
+    padding: 1.4rem 1.2rem; opacity: 0;
+    transition: opacity 0.25s ease 0.2s; min-width: 280px;
+  }
+  .drawer-right.open .inner { opacity: 1; }
+
+  .drawer-title { font-size: 16px; font-weight: 700; color: #2a1d3d; margin-bottom: 0.65rem; line-height: 1.3; }
+  .drawer-body { font-size: 13.5px; color: #2a1d3d; line-height: 1.65; }
+  .drawer-body p + p { margin-top: 0.55rem; }
+  .drawer-body strong { font-weight: 700; }
+
+  /* ── CENTRE GRAPHIC ── */
+  .graphic {
+    flex: 1; position: relative; min-width: 0;
+    transition: flex 0.4s ease;
+  }
+  .graphic svg { width: 100%; height: 100%; display: block; }
+
+  /* ── TOGGLE BUTTONS ── */
+  .btn-left {
+    background: #2a1d3d; color: #f4ede0;
+    border: none; border-radius: 20px; padding: 7px 14px;
+    font-family: 'Alexandria', sans-serif; font-size: 11px; font-weight: 700;
+    cursor: pointer; z-index: 20;
+    box-shadow: 0 2px 10px rgba(42,29,61,0.25);
+    display: flex; align-items: center; gap: 5px;
+    transition: background 0.2s;
+  }
+  .btn-right {
+    background: #2a1d3d; color: #f4ede0;
+    border: none; border-radius: 20px; padding: 7px 14px;
+    font-family: 'Alexandria', sans-serif; font-size: 11px; font-weight: 700;
+    cursor: pointer; z-index: 20;
+    box-shadow: 0 2px 10px rgba(42,29,61,0.25);
+    display: flex; align-items: center; gap: 5px;
+    transition: background 0.2s;
+  }
+  .btn-left:hover, .btn-right:hover { background: #3d2d55; }
+  .arr { transition: transform 0.3s; display: inline-block; font-size: 12px; }
+  .btn-left.open .arr { transform: rotate(180deg); }
+  .btn-right.open .arr { transform: rotate(180deg); }
+
+  /* ── ANIMATIONS ── */
+
+  @keyframes rainFall {
+    0%   { transform: translateY(0px); opacity: 0; }
+    10%  { opacity: 0.9; }
+    85%  { opacity: 0.8; }
+    100% { transform: translateY(70px); opacity: 0; }
+  }
+  @keyframes seep {
+    0%   { opacity: 0; transform: translateY(0); }
+    40%  { opacity: 0.75; }
+    100% { opacity: 0; transform: translateY(16px); }
+  }
+  @keyframes poolPulse {
+    0%,100% { opacity: 0.45; transform: scaleX(1); }
+    50%     { opacity: 0.7; transform: scaleX(1.04); }
+  }
+  @keyframes truckBob {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-3px); }
+  }
+
+  /* .gb animated via JS */
+  .rd { animation: rainFall 1.8s ease-in infinite; }
+  .rd:nth-child(2) { animation-delay: 0.36s; }
+  .rd:nth-child(3) { animation-delay: 0.72s; }
+  .rd:nth-child(4) { animation-delay: 1.08s; }
+  .rd:nth-child(5) { animation-delay: 1.44s; }
+  .rd:nth-child(6) { animation-delay: 0.2s; }
+  .sd { animation: seep 2.2s ease-in infinite; }
+  .sd:nth-child(2) { animation-delay: 0.55s; }
+  .sd:nth-child(3) { animation-delay: 1.1s; }
+  .sd:nth-child(4) { animation-delay: 1.65s; }
+  .pool { animation: poolPulse 2.5s ease-in-out infinite; }
+  .truck { animation: truckBob 2s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<!-- LEFT DRAWER -->
+<div class="drawer-left" id="drawerLeft">
+  <div class="inner">
+    <p class="drawer-title">Landfill gas carries volatile PFAS into the air — and we're barely measuring it</p>
+    <div class="drawer-body">
+      <p>As waste breaks down underground, it produces landfill gas — primarily methane, but also volatile compounds including <strong>fluorotelomer alcohols (FTOHs)</strong> and other air-loving PFAS.</p>
+      <p>Modern landfills burn this gas at flares to manage methane. But <strong>standard flares don't reliably destroy PFAS</strong> — the chemicals can survive combustion and escape into the atmosphere.</p>
+      <p>Recent research suggests PFAS leaving through gas may be <strong>comparable to or greater than what leaves through leachate</strong> — yet there is almost no routine air monitoring around landfills. We don't know where it travels or who is breathing it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CENTRE GRAPHIC -->
+<div class="graphic">
+<svg viewBox="0 0 1050 500" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- BG -->
+  <rect width="1050" height="500" fill="#f4ede0"/>
+
+  <!-- ── GROUND ── -->
+  <rect x="0" y="248" width="1050" height="28" fill="#8B6340"/>
+  <rect x="0" y="276" width="1050" height="224" fill="#6B3A1A"/>
+  <rect x="0" y="362" width="1050" height="138" fill="#5A2E10"/>
+  <!-- liner -->
+  <rect x="0" y="436" width="1050" height="6" fill="#5BA8CC" opacity="0.3"/>
+  <!-- soil dots -->
+  <g fill="#8B5A2A" opacity="0.35">
+    <circle cx="200" cy="310" r="4"/><circle cx="290" cy="342" r="3"/>
+    <circle cx="360" cy="305" r="5"/><circle cx="430" cy="348" r="3"/>
+    <circle cx="500" cy="318" r="4"/><circle cx="570" cy="352" r="3"/>
+    <circle cx="640" cy="308" r="5"/><circle cx="710" cy="345" r="3"/>
+    <circle cx="780" cy="322" r="4"/><circle cx="240" cy="382" r="3"/>
+    <circle cx="400" cy="392" r="4"/><circle cx="560" cy="385" r="3"/>
+    <circle cx="720" cy="378" r="4"/><circle cx="460" cy="418" r="4"/>
+  </g>
+
+  <!-- waste items (white silhouettes, left side) -->
+  <g fill="#f4ede0" opacity="0.82">
+    <path d="M38 342 Q33 315 50 299 Q62 288 73 299 L77 317 L81 344 Q66 355 54 355 Z"/>
+    <path d="M52 295 Q62 278 71 295"/>
+    <rect x="98" y="296" width="5" height="56" rx="2"/>
+    <path d="M96 296 L96 312 Q101 318 106 312 L106 296"/>
+    <ellipse cx="124" cy="301" rx="6" ry="9"/>
+    <rect x="122" y="309" width="4" height="42" rx="2"/>
+    <rect x="142" y="280" width="30" height="68" rx="8"/>
+    <rect x="147" y="270" width="20" height="13" rx="4"/>
+    <rect x="182" y="308" width="22" height="46" rx="6"/>
+    <rect x="186" y="300" width="14" height="10" rx="3"/>
+    <path d="M215 306 L225 353 L238 353 L245 306 Z"/>
+    <rect x="215" y="301" width="30" height="8" rx="3"/>
+    <ellipse cx="294" cy="318" rx="26" ry="11"/>
+    <rect x="268" y="318" width="52" height="20" rx="4"/>
+    <ellipse cx="294" cy="338" rx="26" ry="11"/>
+  </g>
+  <!-- extra waste items spread across centre waste layer -->
+  <g fill="#f4ede0" opacity="0.75">
+    <!-- pizza box -->
+    <rect x="340" y="285" width="38" height="28" rx="3"/>
+    <line x1="340" y1="299" x2="378" y2="299" stroke="#c9956a" stroke-width="1.5"/>
+    <line x1="359" y1="285" x2="359" y2="313" stroke="#c9956a" stroke-width="1.5"/>
+    <!-- tin can -->
+    <rect x="395" y="285" width="20" height="28" rx="4"/>
+    <ellipse cx="405" cy="285" rx="10" ry="4"/>
+    <ellipse cx="405" cy="313" rx="10" ry="4"/>
+    <!-- food wrapper crumpled -->
+    <path d="M428 290 Q438 283 448 290 L452 312 L424 312 Z"/>
+    <!-- takeout cup -->
+    <path d="M468 288 L476 315 L488 315 L494 288 Z"/>
+    <rect x="468" y="284" width="26" height="7" rx="3"/>
+    <!-- straw -->
+    <rect x="498" y="282" width="5" height="32" rx="2" transform="rotate(12 500 298)"/>
+    <!-- foam container -->
+    <rect x="510" y="290" width="32" height="20" rx="5"/>
+    <rect x="514" y="294" width="24" height="12" rx="3" fill="#c9956a" opacity="0.3"/>
+    <!-- another bottle right of centre -->
+    <rect x="555" y="282" width="18" height="34" rx="6"/>
+    <rect x="558" y="275" width="12" height="9" rx="3"/>
+    <!-- rolled up rug/carpet -->
+    <ellipse cx="350" cy="350" rx="30" ry="13"/>
+    <rect x="320" y="350" width="60" height="24" rx="4"/>
+    <ellipse cx="350" cy="374" rx="30" ry="13"/>
+    <!-- plastic bag bunch -->
+    <path d="M488 345 Q493 330 506 330 Q519 330 524 345 Q528 360 506 365 Q484 360 488 345Z"/>
+    <path d="M500 330 Q502 320 506 318"/>
+    <!-- fork left of umbrella -->
+    <rect x="352" y="292" width="5" height="48" rx="2"/>
+    <path d="M350 292 L350 305 Q355 310 360 305 L360 292"/>
+    <!-- spoon -->
+    <ellipse cx="372" cy="296" rx="5" ry="8"/>
+    <rect x="370" y="303" width="4" height="36" rx="2"/>
+  </g>
+
+  <!-- ── GAS PIPE SYSTEM (left-centre) ── -->
+  <rect x="380" y="158" width="20" height="100" fill="#7B4A20" rx="3"/>
+  <rect x="380" y="158" width="110" height="20" fill="#7B4A20" rx="3"/>
+  <rect x="468" y="72" width="20" height="108" fill="#7B4A20" rx="3"/>
+  <rect x="372" y="246" width="38" height="14" fill="#5A3010" rx="3"/>
+  <rect x="458" y="152" width="38" height="28" fill="#5A3010" rx="4"/>
+  <!-- gas vent oval -->
+  <ellipse cx="395" cy="258" rx="20" ry="11" fill="#3A1A05"/>
+
+
+
+  <!-- pink upward arrows on gas side (lower waste layer, shifted left) -->
+  <g fill="none" stroke="#D8A0C8" stroke-width="3.5" stroke-linecap="round" opacity="0.75">
+    <path d="M90 430 L90 378 M82 390 L90 378 L98 390"/>
+    <path d="M128 420 L128 368 M120 380 L128 368 L136 380"/>
+    <path d="M166 432 L166 380 M158 392 L166 380 L174 392"/>
+    <path d="M204 422 L204 370 M196 382 L204 370 L212 382"/>
+  </g>
+
+  <!-- gas bubbles rising from waste through topsoil cover -->
+  <g id="gb1" fill="#D8A0C8"><circle cx="370" cy="310" r="55"/></g>
+  <g id="gb2" fill="#D8A0C8"><circle cx="395" cy="320" r="40"/></g>
+  <g id="gb3" fill="#D8A0C8"><circle cx="422" cy="305" r="65"/></g>
+  <g id="gb4" fill="#D8A0C8"><circle cx="408" cy="316" r="35"/></g>
+
+  <!-- flare flame (static) -->
+  <ellipse cx="478" cy="74" rx="20" ry="11" fill="#C04010" opacity="0.7"/>
+  <ellipse cx="478" cy="63" rx="16" ry="28" fill="#E8640A" opacity="0.95"/>
+  <ellipse cx="478" cy="54" rx="9" ry="18" fill="#F4BD42" opacity="0.95"/>
+  <ellipse cx="478" cy="46" rx="5" ry="11" fill="#FFF0C0" opacity="0.9"/>
+  <!-- heat shimmer lines -->
+  <path d="M470 35 Q472 28 474 22" stroke="#F4BD42" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M478 32 Q480 24 480 18" stroke="#F4BD42" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M486 35 Q487 28 485 22" stroke="#F4BD42" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+  <!-- ── PINK CLOUD (left side) ── -->
+  <circle cx="175" cy="142" r="70" fill="#E8A8D0"/>
+  <circle cx="122" cy="162" r="54" fill="#E8A8D0"/>
+  <circle cx="228" cy="165" r="52" fill="#E8A8D0"/>
+  <circle cx="158" cy="103" r="48" fill="#E8A8D0"/>
+  <circle cx="208" cy="108" r="44" fill="#E8A8D0"/>
+  <circle cx="144" cy="192" r="35" fill="#E8A8D0"/>
+  <circle cx="212" cy="195" r="33" fill="#E8A8D0"/>
+
+  <!-- cloud text -->
+  <text x="175" y="105" fill="#2a1d3d" font-family="Alexandria" font-size="19.0" font-weight="700" text-anchor="middle">Air-loving</text>
+  <text x="175" y="126" fill="#2a1d3d" font-family="Alexandria" font-size="19.0" font-weight="700" text-anchor="middle">(e.g., FTOHs):</text>
+  <text x="175" y="148" fill="#2a1d3d" font-family="Alexandria" font-size="19.0" font-weight="700" text-anchor="middle">evaporate as fumes</text>
+  <text x="175" y="168" fill="#2a1d3d" font-family="Alexandria" font-size="19.0" font-weight="700" text-anchor="middle">→ leave through</text>
+  <text x="175" y="188" fill="#2a1d3d" font-family="Alexandria" font-size="19.0" font-weight="700" text-anchor="middle">landfill gas</text>
+
+  <!-- arrow cloud to flare -->
+  <path d="M272 145 Q340 115 460 82" stroke="#C07898" stroke-width="2.5" stroke-dasharray="7 5" fill="none" opacity="0.6" marker-end="url(#ap)"/>
+
+  <!-- ── RAIN (right side) ── -->
+  <g fill="#91C8E4">
+    <path class="rd" d="M630 90 Q618 52 630 18 Q642 52 642 90 Q636 108 630 90Z" opacity="0.7"/>
+    <path class="rd" d="M690 105 Q678 67 690 33 Q702 67 702 105 Q696 123 690 105Z" opacity="0.7"/>
+    <path class="rd" d="M750 85 Q738 47 750 13 Q762 47 762 85 Q756 103 750 85Z" opacity="0.7"/>
+    <path class="rd" d="M810 100 Q798 62 810 28 Q822 62 822 100 Q816 118 810 100Z" opacity="0.7"/>
+    <path class="rd" d="M870 88 Q858 50 870 16 Q882 50 882 88 Q876 106 870 88Z" opacity="0.7"/>
+    <path class="rd" d="M930 102 Q918 64 930 30 Q942 64 942 102 Q936 120 930 102Z" opacity="0.5"/>
+  </g>
+
+  <!-- down arrows through right waste -->
+  <g fill="none" stroke="#5BA8CC" stroke-width="3.5" stroke-linecap="round">
+    <path d="M580 292 L580 336 M572 324 L580 336 L588 324"/>
+    <path d="M645 306 L645 355 M637 343 L645 355 L653 343"/>
+    <path d="M710 290 L720 348 M711 336 L720 348 L728 336"/>
+    <path d="M775 304 L775 362 M767 350 L775 362 L783 350"/>
+  </g>
+  <!-- seep drops -->
+  <g fill="#5BA8CC">
+    <ellipse class="sd" cx="610" cy="298" rx="4" ry="7" opacity="0.55"/>
+    <ellipse class="sd" cx="675" cy="310" rx="4" ry="7" opacity="0.5"/>
+    <ellipse class="sd" cx="740" cy="296" rx="4" ry="7" opacity="0.55"/>
+    <ellipse class="sd" cx="805" cy="308" rx="4" ry="7" opacity="0.5"/>
+  </g>
+
+  <!-- leachate pool -->
+  <g class="pool">
+    <ellipse cx="700" cy="436" rx="175" ry="12" fill="#5BA8CC" opacity="0.28"/>
+    <ellipse cx="700" cy="434" rx="120" ry="8" fill="#5BA8CC" opacity="0.22"/>
+  </g>
+  <text x="660" y="435" fill="#f4ede0" font-family="Alexandria" font-size="13.5" font-weight="700" opacity="0.75">PFAS-laden leachate</text>
+
+  <!-- pipe to truck -->
+  <path d="M790 434 Q820 434 820 416 L820 386" stroke="#5BA8CC" stroke-width="4.5" opacity="0.45" fill="none"/>
+
+  <!-- truck -->
+  <g class="truck">
+    <!-- tank body -->
+    <rect x="746" y="278" width="216" height="108" rx="12" fill="#5BA8CC" opacity="0.78"/>
+    <!-- cab -->
+    <rect x="886" y="236" width="102" height="78" rx="10" fill="#3A8AB0"/>
+    <!-- window -->
+    <rect x="898" y="248" width="66" height="44" rx="6" fill="#d4eef8" opacity="0.8"/>
+    <!-- exhaust pipe -->
+    <rect x="982" y="210" width="12" height="36" rx="4" fill="#3A8AB0"/>
+    <!-- wheels -->
+    <circle cx="782" cy="394" r="26" fill="#3d2810"/>
+    <circle cx="782" cy="394" r="15" fill="#7a5a3a"/>
+    <circle cx="856" cy="394" r="26" fill="#3d2810"/>
+    <circle cx="856" cy="394" r="15" fill="#7a5a3a"/>
+    <circle cx="930" cy="394" r="26" fill="#3d2810"/>
+    <circle cx="930" cy="394" r="15" fill="#7a5a3a"/>
+    <text x="846" y="338" fill="white" font-family="Alexandria" font-size="22" font-weight="700" text-anchor="middle">LEACHATE</text>
+  </g>
+  <text x="854" y="445" fill="#f4ede0" font-family="Alexandria" font-size="15" font-weight="700" text-anchor="middle" opacity="0.85">→ to WWTP</text>
+
+  <!-- ── BIG BLUE TEARDROP (right) ── -->
+  <path d="M756 18 Q830 70 845 160 Q858 248 756 282 Q654 248 667 160 Q682 70 756 18Z" fill="#91C8E4" opacity="0.82"/>
+  <text x="756" y="102" fill="#2a1d3d" font-family="Alexandria" font-size="18.0" font-weight="700" text-anchor="middle">Water-loving</text>
+  <text x="756" y="122" fill="#2a1d3d" font-family="Alexandria" font-size="18.0" font-weight="700" text-anchor="middle">(e.g., PFOA,</text>
+  <text x="756" y="142" fill="#2a1d3d" font-family="Alexandria" font-size="18.0" font-weight="700" text-anchor="middle">PFOS): dissolve</text>
+  <text x="756" y="162" fill="#2a1d3d" font-family="Alexandria" font-size="18.0" font-weight="700" text-anchor="middle">in liquid →</text>
+  <text x="756" y="182" fill="#2a1d3d" font-family="Alexandria" font-size="18.0" font-weight="700" text-anchor="middle">leave through</text>
+  <text x="756" y="202" fill="#2a1d3d" font-family="Alexandria" font-size="18.0" font-weight="700" text-anchor="middle">leachate</text>
+
+  <!-- small rain drops beside teardrop -->
+  <ellipse cx="836" cy="145" rx="10" ry="14" fill="#91C8E4" opacity="0.55"/>
+  <ellipse cx="855" cy="175" rx="7" ry="10" fill="#91C8E4" opacity="0.45"/>
+  <ellipse cx="844" cy="200" rx="5" ry="7" fill="#91C8E4" opacity="0.4"/>
+
+  <defs>
+    <marker id="ap" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#C07898" opacity="0.7"/>
+    </marker>
+  </defs>
+
+</svg>
+
+  <!-- buttons as SVG foreignObject overlays -->
+  <div style="position:absolute;left:14px;bottom:16px;z-index:20;">
+    <button class="btn-left" id="btnL" onclick="toggleLeft()">
+      <span class="arr">‹</span><span id="btnLTxt">Gas pathway</span>
+    </button>
+  </div>
+  <div style="position:absolute;right:14px;bottom:16px;z-index:20;">
+    <button class="btn-right" id="btnR" onclick="toggleRight()">
+      <span id="btnRTxt">Leachate pathway</span><span class="arr">›</span>
+    </button>
+  </div>
+</div>
+
+<!-- RIGHT DRAWER -->
+<div class="drawer-right" id="drawerRight">
+  <div class="inner">
+    <p class="drawer-title">Rainwater dissolves PFAS from buried waste and carries it to our waterways</p>
+    <div class="drawer-body">
+      <p>As rainwater and moisture from decomposition percolate through buried waste, they dissolve <strong>water-soluble PFAS like PFOA and PFOS</strong> — from food packaging, carpet, raingear, and thousands of other everyday products.</p>
+      <p>This liquid — leachate — collects above the liner and is piped or trucked to <strong>wastewater treatment plants</strong> not equipped to remove PFAS. The chemicals pass through intact and are discharged into rivers and lakes.</p>
+      <p>In some cases, <strong>PFAS levels in treated effluent are actually higher</strong> than in incoming sewage. In 2024, 36 New York plants processed more than 1 million gallons of PFAS-laden leachate every single day.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// JS-driven gas bubble animation (up and to the left)
+(function() {
+  var bubbles = [
+    { id: 'gb1', ox: 370, oy: 310, delay: 0 },
+    { id: 'gb2', ox: 395, oy: 320, delay: 650 },
+    { id: 'gb3', ox: 422, oy: 305, delay: 1300 },
+    { id: 'gb4', ox: 408, oy: 316, delay: 1950 }
+  ];
+  var duration = 2600;
+
+  bubbles.forEach(function(b) {
+    var el = document.getElementById(b.id);
+    if (!el) return;
+    var start = null;
+    function step(ts) {
+      if (!start) start = ts - b.delay;
+      var elapsed = (ts - start) % duration;
+      var p = elapsed / duration;
+      var tx = b.ox + (-80 * p);
+      var ty = b.oy + (-130 * p);
+      var opacity = p < 0.6 ? 0.65 : 0.65 * (1 - (p - 0.6) / 0.4);
+      el.setAttribute('cx', tx);
+      el.querySelector('circle').setAttribute('cx', tx);
+      el.querySelector('circle').setAttribute('cy', ty);
+      el.setAttribute('opacity', opacity);
+      requestAnimationFrame(step);
+    }
+    setTimeout(function() {
+      requestAnimationFrame(step);
+    }, b.delay);
+  });
+})();
+
+function toggleLeft() {
+  const d = document.getElementById('drawerLeft');
+  const b = document.getElementById('btnL');
+  const t = document.getElementById('btnLTxt');
+  const open = d.classList.toggle('open');
+  b.classList.toggle('open', open);
+  t.textContent = open ? 'Close' : 'Gas pathway';
+}
+function toggleRight() {
+  const d = document.getElementById('drawerRight');
+  const b = document.getElementById('btnR');
+  const t = document.getElementById('btnRTxt');
+  const open = d.classList.toggle('open');
+  b.classList.toggle('open', open);
+  t.textContent = open ? 'Close' : 'Leachate pathway';
+}
+</script>
+</body>
+</html>

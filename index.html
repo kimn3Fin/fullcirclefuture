@@ -20,7 +20,7 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body { height: 100%; }
+  html, body { height: 100%; max-height: 600px; overflow: hidden; }
 
   body {
     font-family: 'Alexandria', sans-serif;
@@ -31,8 +31,6 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    overflow-y: auto;
   }
 
   /* Brand mark icon SVG inline top-right */
@@ -77,10 +75,10 @@
 
   /* Stat cards */
   .stat-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 0;
   }
 
   .stat-card {
@@ -159,13 +157,14 @@
   .chart-wrap {
     position: relative;
     width: 100%;
-    height: 220px;
+    flex: 1;
+    min-height: 180px;
   }
 
   .legend {
     display: flex;
     gap: 20px;
-    margin-top: 12px;
+    margin-top: 6px;
     font-family: 'Alexandria', sans-serif;
     font-weight: 300;
     font-size: 12px;
@@ -213,30 +212,27 @@
     opacity: 1;
   }
 
-  /* Sources */
   .sources {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 0.6rem;
+    gap: 4px;
+    margin-top: 0.3rem;
   }
 
   .tag {
     font-family: 'Alexandria', sans-serif;
     font-weight: 300;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 0.04em;
     color: var(--fcf-dark-purple);
     background: rgba(244,189,66,0.85);
     border-radius: 3px;
-    padding: 3px 8px;
+    padding: 2px 6px;
     text-decoration: none;
     transition: background 0.15s;
   }
 
-  .tag:hover {
-    background: rgba(244,189,66,1);
-  }
+  .tag:hover { background: rgba(244,189,66,1); }
 
   .intro-text {
     font-family: 'Alexandria', sans-serif;
@@ -273,60 +269,99 @@
     opacity: 0.6;
   }
 
-  @media (max-width: 600px) {
-    .stat-row { grid-template-columns: 1fr; }
-    .header-row { flex-direction: column; }
-    .brand-mark { display: none; }
+  .right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+    height: 100%;
+  }
+
+  .chart-section {
+    flex: 7;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .sources-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.3rem;
+    overflow: hidden;
+  }
+
+  .main-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 1.25rem;
+    align-items: stretch;
+    flex: 1;
+    min-height: 0;
+    max-height: 560px;
+  }
+
+  .left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 </style>
 </head>
 <body>
 
-<div class="intro-text">
-  <p class="intro-heading">Standard wastewater treatment cannot remove PFAS — leachate passes through to rivers intact.</p>
-  <strong>In some cases it actually raises PFAS levels in treated effluent above incoming sewage levels. Below are real measurements from multiple sites across multiple states.</strong>
-  <span class="sub">Beyond Toxics / High Country News 2025 &nbsp;·&nbsp; Chen et al. 2023</span>
-</div>
+<div class="main-layout">
 
-<div class="stat-row">
-  <div class="stat-card">
-    <p class="stat-label">Typical MSW leachate</p>
-    <p class="stat-val">10,000 ng/L</p>
-    <p class="stat-sub">Median total PFAS concentration measured in municipal solid waste leachate</p>
-    <p class="stat-context">Chen et al. 2023 — that's 1,000× the EPA drinking water limit</p>
+  <!-- LEFT: stacked stat cards -->
+  <div class="left-col">
+    <div class="stat-row">
+      <div class="stat-card">
+        <p class="stat-label">Typical MSW leachate</p>
+        <p class="stat-val">10,000 ng/L</p>
+        <p class="stat-sub">Median total PFAS in municipal solid waste leachate</p>
+        <p class="stat-context">Chen et al. 2023 — 1,000× the EPA drinking water limit</p>
+      </div>
+      <div class="stat-card danger">
+        <p class="stat-label">Peak measured — Dunn Landfill, NY</p>
+        <p class="stat-val">190,000 parts per trillion</p>
+        <p class="stat-sub">PFOA alone — 19,000× New York's drinking water limit</p>
+        <p class="stat-context">PEER 2022 — a C&D landfill in Rensselaer County</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">U.S. national annual release</p>
+        <p class="stat-val">~600 kg/yr</p>
+        <p class="stat-sub">PFAS discharged from U.S. landfill leachate to wastewater plants</p>
+        <p class="stat-context">Lang et al. 2017 — across 95 landfills nationwide</p>
+      </div>
+    </div>
   </div>
-  <div class="stat-card danger">
-    <p class="stat-label">Peak measured — Dunn Landfill, NY</p>
-    <p class="stat-val">190,000 parts per trillion</p>
-    <p class="stat-sub">PFOA alone in leachate — 19,000× New York's drinking water limit of 10 ppt</p>
-    <p class="stat-context">PEER 2022 — a construction & demolition landfill in Rensselaer County</p>
-  </div>
-  <div class="stat-card">
-    <p class="stat-label">U.S. national annual release</p>
-    <p class="stat-val">~600 kg/yr</p>
-    <p class="stat-sub">Estimated total PFAS discharged from U.S. landfill leachate to wastewater plants</p>
-    <p class="stat-context">Lang et al. 2017 — across 95 landfills nationwide</p>
-  </div>
-</div>
 
-<p class="chart-label">Total PFAS in leachate vs. drinking water limits (ng/L, log scale)</p>
-<div class="chart-wrap">
-  <canvas id="chart" role="img" aria-label="Log scale bar chart showing PFAS concentrations in landfill leachate across multiple U.S. regions are thousands to hundreds of thousands of ng/L, versus EPA and NY drinking water limits of 0.02 to 10 ng/L.">
-    Drinking water limits: EPA 0.02 ng/L; NY state 10 ng/L. Measured leachate: WA State low 61 ng/L; FL/PA/CO avg 6,900 ng/L; Puerto Rico low 11,200 ng/L; WA State high 172,976 ng/L; Dunn NY PFOA only 190,000 ng/L.
-  </canvas>
-</div>
-<div class="legend">
-  <span><span class="swatch" style="background:#e6674f;"></span>Leachate (measured — above safe limits)</span>
-  <span><span class="swatch" style="background:#0a8574; height:3px; border-radius:0;"></span>Drinking water limit</span>
-</div>
+  <!-- RIGHT: chart -->
+  <div class="right-col">
+    <div class="chart-section">
+      <p class="chart-label">Total PFAS in leachate vs. drinking water limits (ng/L, log scale)</p>
+      <div class="chart-wrap">
+        <canvas id="chart" role="img" aria-label="Log scale bar chart showing PFAS concentrations in landfill leachate across multiple U.S. regions."></canvas>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#e6674f;"></span>Leachate (measured — above safe limits)</span>
+        <span><span class="swatch" style="background:#0a8574; height:3px; border-radius:0;"></span>Drinking water limit</span>
+      </div>
+    </div>
+    <div class="sources-section">
+      <div class="sources">
+        <a class="tag" href="https://pubs.acs.org/doi/10.1021/acs.est.6b05005" target="_blank" rel="noopener">Lang et al. 2017 · Env. Sci. &amp; Tech.</a>
+        <a class="tag" href="https://www.sciencedirect.com/science/article/abs/pii/S0045653523001704" target="_blank" rel="noopener">Chen et al. 2023 · Chemosphere</a>
+        <a class="tag" href="https://www.sciencedirect.com/science/article/abs/pii/S0956053X20301458" target="_blank" rel="noopener">Solo-Gabriele et al. 2020</a>
+        <a class="tag" href="https://peer.org/blog-dunn-landfills-environmental-injustice/" target="_blank" rel="noopener">Dunn Landfill / PEER 2022</a>
+        <a class="tag" href="https://www.hcn.org/issues/57-6/where-the-garbage-goes/" target="_blank" rel="noopener">Beyond Toxics / HCN 2025</a>
+        <a class="tag" href="https://extapps.dec.ny.gov/docs/materials_minerals_pdf/inactivelandfillreportfinal202207.pdf" target="_blank" rel="noopener">NY DEC 2022</a>
+      </div>
+    </div>
+  </div>
 
-<div class="sources">
-  <a class="tag" href="https://pubs.acs.org/doi/10.1021/acs.est.6b05005" target="_blank" rel="noopener">Lang et al. 2017 · Env. Sci. &amp; Tech.</a>
-  <a class="tag" href="https://www.sciencedirect.com/science/article/abs/pii/S0045653523001704" target="_blank" rel="noopener">Chen et al. 2023 · Chemosphere</a>
-  <a class="tag" href="https://www.sciencedirect.com/science/article/abs/pii/S0956053X20301458" target="_blank" rel="noopener">Solo-Gabriele et al. 2020</a>
-  <a class="tag" href="https://peer.org/blog-dunn-landfills-environmental-injustice/" target="_blank" rel="noopener">Dunn Landfill / PEER 2022</a>
-  <a class="tag" href="https://www.hcn.org/issues/57-6/where-the-garbage-goes/" target="_blank" rel="noopener">Beyond Toxics / HCN 2025</a>
-  <a class="tag" href="https://extapps.dec.ny.gov/docs/materials_minerals_pdf/inactivelandfillreportfinal202207.pdf" target="_blank" rel="noopener">NY DEC 2022</a>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>

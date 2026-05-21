@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PFAS in Landfill Leachate — Full Circle Future</title>
-<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;600;700&display=swap" rel="stylesheet">
 <style>
   /* FCF brand colors */
   :root {
@@ -24,8 +24,8 @@
 
   body {
     font-family: 'Alexandria', sans-serif;
-    background: var(--fcf-dark-purple);
-    color: var(--fcf-off-white);
+    background: var(--fcf-off-white);
+    color: var(--fcf-dark-purple);
     padding: 1rem 1.25rem;
     max-width: 100%;
     margin: 0;
@@ -57,7 +57,7 @@
     font-weight: 600;
     font-size: 26px;
     line-height: 1.15;
-    color: var(--fcf-off-white);
+    color: var(--fcf-dark-purple);
     margin-bottom: 0.5rem;
     letter-spacing: 0;
   }
@@ -68,7 +68,7 @@
     font-family: 'Alexandria', sans-serif;
     font-weight: 300;
     font-size: 14px;
-    color: var(--fcf-off-white);
+    color: var(--fcf-dark-purple);
     opacity: 0.75;
     line-height: 1.6;
     margin-bottom: 0.75rem;
@@ -84,10 +84,10 @@
   }
 
   .stat-card {
-    background: rgba(244,239,233,0.07);
-    border: 1px solid rgba(244,239,233,0.15);
+    background: var(--fcf-dark-purple);
+    border: none;
     border-radius: 8px;
-    padding: 0.6rem 0.8rem;
+    padding: 0.75rem 0.9rem;
     position: relative;
     overflow: hidden;
   }
@@ -105,20 +105,20 @@
   .stat-label {
     font-family: 'Alexandria', sans-serif;
     font-weight: 600;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--fcf-off-white);
-    opacity: 0.55;
+    opacity: 0.7;
     margin-bottom: 6px;
   }
 
   .stat-val {
     font-family: 'Alexandria', sans-serif;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 22px;
     color: var(--fcf-yellow);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     line-height: 1.1;
   }
 
@@ -126,11 +126,22 @@
 
   .stat-sub {
     font-family: 'Alexandria', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--fcf-off-white);
+    opacity: 0.85;
+    line-height: 1.5;
+  }
+
+  .stat-context {
+    font-family: 'Alexandria', sans-serif;
     font-weight: 300;
     font-size: 11px;
     color: var(--fcf-off-white);
     opacity: 0.55;
     line-height: 1.4;
+    margin-top: 5px;
+    font-style: italic;
   }
 
   /* Chart */
@@ -140,7 +151,7 @@
     font-size: 10px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--fcf-off-white);
+    color: var(--fcf-dark-purple);
     opacity: 0.5;
     margin-bottom: 10px;
   }
@@ -158,7 +169,7 @@
     font-family: 'Alexandria', sans-serif;
     font-weight: 300;
     font-size: 12px;
-    color: var(--fcf-off-white);
+    color: var(--fcf-dark-purple);
     opacity: 0.65;
     flex-wrap: wrap;
   }
@@ -169,7 +180,7 @@
   /* Divider */
   .divider {
     border: none;
-    border-top: 1px solid rgba(244,239,233,0.12);
+    border-top: 1px solid rgba(42,29,61,0.12);
     margin: 0.75rem 0 0.6rem;
   }
 
@@ -178,7 +189,7 @@
     font-family: 'Alexandria', sans-serif;
     font-weight: 300;
     font-size: 12px;
-    color: var(--fcf-off-white);
+    color: var(--fcf-dark-purple);
     opacity: 0.6;
     line-height: 1.6;
     display: flex;
@@ -227,6 +238,41 @@
     background: rgba(244,189,66,1);
   }
 
+  .intro-text {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    color: var(--fcf-dark-purple);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(42,29,61,0.12);
+  }
+
+  .intro-text strong {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--fcf-dark-purple);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .intro-heading {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: var(--fcf-dark-purple);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .intro-text .sub {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 13px;
+    opacity: 0.6;
+  }
+
   @media (max-width: 600px) {
     .stat-row { grid-template-columns: 1fr; }
     .header-row { flex-direction: column; }
@@ -236,21 +282,30 @@
 </head>
 <body>
 
+<div class="intro-text">
+  <p class="intro-heading">Standard wastewater treatment cannot remove PFAS — leachate passes through to rivers intact.</p>
+  <strong>In some cases it actually raises PFAS levels in treated effluent above incoming sewage levels. Below are real measurements from multiple sites across multiple states.</strong>
+  <span class="sub">Beyond Toxics / High Country News 2025 &nbsp;·&nbsp; Chen et al. 2023</span>
+</div>
+
 <div class="stat-row">
   <div class="stat-card">
     <p class="stat-label">Typical MSW leachate</p>
     <p class="stat-val">10,000 ng/L</p>
-    <p class="stat-sub">median total PFAS<br>(Chen et al. 2023)</p>
+    <p class="stat-sub">Median total PFAS concentration measured in municipal solid waste leachate</p>
+    <p class="stat-context">Chen et al. 2023 — that's 1,000× the EPA drinking water limit</p>
   </div>
   <div class="stat-card danger">
-    <p class="stat-label">Peak measured — Dunn, NY</p>
-    <p class="stat-val">190,000 ppt</p>
-    <p class="stat-sub">PFOA alone — 19,000× NY's drinking water limit</p>
+    <p class="stat-label">Peak measured — Dunn Landfill, NY</p>
+    <p class="stat-val">190,000 parts per trillion</p>
+    <p class="stat-sub">PFOA alone in leachate — 19,000× New York's drinking water limit of 10 ppt</p>
+    <p class="stat-context">PEER 2022 — a construction & demolition landfill in Rensselaer County</p>
   </div>
   <div class="stat-card">
-    <p class="stat-label">National release to WWTPs</p>
+    <p class="stat-label">U.S. national annual release</p>
     <p class="stat-val">~600 kg/yr</p>
-    <p class="stat-sub">PFAS from U.S. landfill leachate<br>(Lang et al. 2017)</p>
+    <p class="stat-sub">Estimated total PFAS discharged from U.S. landfill leachate to wastewater plants</p>
+    <p class="stat-context">Lang et al. 2017 — across 95 landfills nationwide</p>
   </div>
 </div>
 
@@ -261,15 +316,8 @@
   </canvas>
 </div>
 <div class="legend">
-  <span><span class="swatch" style="background:#f4bd42;"></span>Leachate (measured)</span>
-  <span><span class="swatch" style="background:#e6674f;"></span>Drinking water limit</span>
-</div>
-
-<hr class="divider">
-
-<div class="note">
-  <span class="note-icon" aria-hidden="true">!</span>
-  <span>Standard wastewater treatment cannot remove PFAS — leachate contamination passes through to rivers intact. In some cases it actually raises PFAS levels in treated effluent above incoming sewage levels. (Beyond Toxics / High Country News 2025; Chen et al. 2023)</span>
+  <span><span class="swatch" style="background:#e6674f;"></span>Leachate (measured — above safe limits)</span>
+  <span><span class="swatch" style="background:#0a8574; height:3px; border-radius:0;"></span>Drinking water limit</span>
 </div>
 
 <div class="sources">
@@ -284,30 +332,28 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 const labels = [
-  ['EPA MCL', '(PFOA/PFOS)'],
-  ['NY drinking', 'water limit'],
   ['WA State', 'landfills (low)'],
   ['FL / PA / CO', 'landfills (avg)'],
   ['Puerto Rico', 'MSW (low)'],
   ['WA State', 'landfills (high)'],
   ['Dunn, NY', '(PFOA only)']
 ];
-const values = [0.02, 10, 61, 6900, 11200, 172976, 190000];
-const isLimit = [true, true, false, false, false, false, false];
-const bgColors = values.map((v, i) => isLimit[i] ? '#e6674f' : '#f4bd42');
-const bdColors = values.map((v, i) => isLimit[i] ? '#b84030' : '#c49030');
+const values = [61, 6900, 11200, 172976, 190000];
 
 new Chart(document.getElementById('chart'), {
   type: 'bar',
   data: {
     labels: labels,
-    datasets: [{
-      data: values,
-      backgroundColor: bgColors,
-      borderColor: bdColors,
-      borderWidth: 1,
-      borderRadius: 3
-    }]
+    datasets: [
+      {
+        label: 'Leachate (measured)',
+        data: values,
+        backgroundColor: '#e6674f',
+        borderColor: '#b84030',
+        borderWidth: 1,
+        borderRadius: 3
+      }
+    ]
   },
   options: {
     responsive: true,
@@ -315,11 +361,11 @@ new Chart(document.getElementById('chart'), {
     plugins: {
       legend: { display: false },
       tooltip: {
-        backgroundColor: '#2a1d3d',
-        borderColor: 'rgba(244,239,233,0.2)',
+        backgroundColor: '#f4efe9',
+        borderColor: 'rgba(42,29,61,0.2)',
         borderWidth: 1,
-        titleColor: '#f4efe9',
-        bodyColor: '#f4bd42',
+        titleColor: '#2a1d3d',
+        bodyColor: '#e6674f',
         callbacks: {
           label: ctx => {
             const v = ctx.parsed.y;
@@ -332,8 +378,8 @@ new Chart(document.getElementById('chart'), {
     scales: {
       x: {
         ticks: {
-          font: { family: 'Alexandria', size: 11 },
-          color: 'rgba(244,239,233,0.55)',
+          font: { family: 'Alexandria', size: 12, weight: '600' },
+          color: 'rgba(42,29,61,0.8)',
           autoSkip: false,
           maxRotation: 0
         },
@@ -344,8 +390,8 @@ new Chart(document.getElementById('chart'), {
         type: 'logarithmic',
         min: 0.01,
         ticks: {
-          font: { family: 'Alexandria', size: 11 },
-          color: 'rgba(244,239,233,0.45)',
+          font: { family: 'Alexandria', size: 12, weight: '600' },
+          color: 'rgba(42,29,61,0.7)',
           callback: v => {
             const marks = [0.01, 0.1, 1, 10, 100, 1000, 10000, 100000, 1000000];
             if (marks.includes(v)) {
@@ -355,17 +401,77 @@ new Chart(document.getElementById('chart'), {
             return null;
           }
         },
-        grid: { color: 'rgba(244,239,233,0.07)' },
-        border: { color: 'rgba(244,239,233,0.15)' },
+        grid: { color: 'rgba(42,29,61,0.08)' },
+        border: { color: 'rgba(42,29,61,0.15)' },
         title: {
           display: true,
           text: 'ng/L (log scale)',
           font: { family: 'Alexandria', size: 10 },
-          color: 'rgba(244,239,233,0.4)'
+          color: 'rgba(42,29,61,0.45)'
         }
       }
     }
-  }
+  },
+  plugins: [{
+    id: 'limitLines',
+    afterDraw(chart) {
+      const { ctx, chartArea: { left, right } } = chart;
+      const y = chart.scales.y;
+
+      const limits = [
+        { value: 0.02, label: 'EPA limit  0.02 ng/L' },
+        { value: 10,   label: 'NY limit  10 ng/L'    }
+      ];
+
+      limits.forEach(({ value, label }) => {
+        const yPos = y.getPixelForValue(value);
+        if (yPos < chart.chartArea.top || yPos > chart.chartArea.bottom) return;
+
+        // dashed green line
+        ctx.save();
+        ctx.strokeStyle = '#0a8574';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        ctx.moveTo(left, yPos);
+        ctx.lineTo(right, yPos);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // rounded pill label
+        const padding = { x: 8, y: 4 };
+        ctx.font = '600 11px Alexandria, sans-serif';
+        const textW = ctx.measureText(label).width;
+        const boxW = textW + padding.x * 2;
+        const boxH = 16 + padding.y * 2;
+        const boxX = right - boxW - 4;
+        const boxY = yPos - boxH / 2;
+
+        // pill background
+        ctx.fillStyle = '#0a8574';
+        const r = 6;
+        ctx.beginPath();
+        ctx.moveTo(boxX + r, boxY);
+        ctx.lineTo(boxX + boxW - r, boxY);
+        ctx.quadraticCurveTo(boxX + boxW, boxY, boxX + boxW, boxY + r);
+        ctx.lineTo(boxX + boxW, boxY + boxH - r);
+        ctx.quadraticCurveTo(boxX + boxW, boxY + boxH, boxX + boxW - r, boxY + boxH);
+        ctx.lineTo(boxX + r, boxY + boxH);
+        ctx.quadraticCurveTo(boxX, boxY + boxH, boxX, boxY + boxH - r);
+        ctx.lineTo(boxX, boxY + r);
+        ctx.quadraticCurveTo(boxX, boxY, boxX + r, boxY);
+        ctx.closePath();
+        ctx.fill();
+
+        // label text
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, boxX + padding.x, boxY + boxH / 2);
+        ctx.restore();
+      });
+    }
+  }]
 });
 </script>
 </body>

@@ -22,25 +22,23 @@
     font-family: 'Alexandria', sans-serif;
     background: var(--purple);
     color: var(--off-white);
-    width: 600px;
+    width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    padding: 1.25rem 1.5rem;
+    padding: 0.75rem 1rem;
   }
 
   .header-row {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    width: 100%;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.4rem;
   }
 
   .label {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -55,88 +53,34 @@
     text-transform: uppercase;
   }
 
-  /* ── MAIN LAYOUT ── */
   .layout {
     display: grid;
-    grid-template-columns: 200px minmax(260px, 340px) 200px;
-    gap: 0 1rem;
+    grid-template-columns: minmax(180px, 220px) 1fr;
+    gap: 1rem;
+    align-items: center;
     width: 100%;
-    align-items: start;
+    position: relative;
   }
 
-  /* side card columns */
-  .col {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    padding-top: 60px;
-  }
-
-  .card {
-    background: rgba(244,239,233,0.06);
-    border-radius: 6px;
-    padding: 8px 11px;
-    width: 100%;
-  }
-
-  .col.left .card  { border-right: 3px solid transparent; text-align: right; }
-  .col.right .card { border-left: 3px solid transparent; }
-
-  .card-title {
-    font-size: 11px;
-    font-weight: 600;
-    margin-bottom: 3px;
-    line-height: 1.2;
-  }
-
-  .card-body {
-    font-size: 10px;
-    font-weight: 300;
-    color: rgba(244,239,233,0.55);
-    line-height: 1.45;
-  }
-
-  /* ── CENTRE: torso + overlaid text ── */
-  .centre {
+  /* ── TORSO ── */
+  .figure-wrap {
     position: relative;
     width: 100%;
-    min-width: 260px;
   }
 
   .torso-svg {
     display: block;
     width: 100%;
     height: auto;
-    min-height: 300px;
   }
 
-  /* gradient fade over lower torso */
-  .text-overlay {
+  /* connector canvas sits over the whole layout */
+  #connector-canvas {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(42,29,61,0) 0%,
-      rgba(42,29,61,0.82) 30%,
-      rgba(42,29,61,0.97) 60%,
-      rgba(42,29,61,1) 100%
-    );
-    padding: 3rem 1.25rem 1.25rem;
-    border-radius: 0 0 8px 8px;
-  }
-
-  .overlay-text {
-    font-size: 12px;
-    font-weight: 300;
-    color: rgba(244,239,233,0.8);
-    line-height: 1.65;
-  }
-
-  .overlay-text strong {
-    font-weight: 600;
-    color: var(--red);
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 5;
   }
 
   /* hotspot dots */
@@ -148,21 +92,22 @@
   }
 
   .dot {
-    width: 11px;
-    height: 11px;
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
     border: 2px solid var(--purple);
     position: relative;
     transition: transform 0.15s;
   }
 
-  .hotspot:hover .dot { transform: scale(1.4); }
+  .hotspot:hover .dot,
+  .hotspot.active .dot { transform: scale(1.5); }
 
   .dot::after {
     content: '';
     position: absolute;
     top: -5px; left: -5px;
-    width: 17px; height: 17px;
+    width: 19px; height: 19px;
     border-radius: 50%;
     border: 1.5px solid currentColor;
     opacity: 0;
@@ -174,36 +119,39 @@
     100% { transform: scale(2.2); opacity: 0; }
   }
 
-  /* popups */
-  .popup {
-    position: absolute;
-    background: #1a1028;
-    border: 1px solid rgba(244,239,233,0.18);
-    border-radius: 7px;
-    padding: 9px 12px;
-    width: 160px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.18s;
-    z-index: 30;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-    font-size: 11px;
-    font-weight: 300;
-    color: rgba(244,239,233,0.7);
-    line-height: 1.5;
+  /* ── CARDS GRID ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
   }
 
-  .hotspot:hover .popup { opacity: 1; }
+  .card {
+    background: rgba(244,239,233,0.07);
+    border-radius: 7px;
+    padding: 12px 15px;
+    border-left: 3px solid transparent;
+    transition: background 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
 
-  .popup.left  { right: 18px; top: 50%; transform: translateY(-50%); }
-  .popup.right { left: 18px;  top: 50%; transform: translateY(-50%); }
-  .popup.above { bottom: 18px; left: 50%; transform: translateX(-50%); }
+  .card.highlighted {
+    background: rgba(244,239,233,0.16);
+    box-shadow: 0 0 0 2px currentColor;
+  }
 
-  .popup-title {
-    font-size: 11px;
+  .card-title {
+    font-size: 16px;
     font-weight: 600;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
     line-height: 1.2;
+  }
+
+  .card-body {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(244,239,233,0.75);
+    line-height: 1.5;
   }
 </style>
 </head>
@@ -211,158 +159,182 @@
 
 <div class="header-row">
   <p class="label">Health effects of PFAS exposure</p>
-  <p class="hint">hover to explore</p>
+  <p class="hint">hover the figure to explore</p>
 </div>
 
-<div class="layout">
+<div class="layout" id="layout">
+  <canvas id="connector-canvas"></canvas>
 
-  <!-- LEFT CARDS -->
-  <div class="col left">
-    <div class="card" style="border-right-color:#91c8e4;">
+  <!-- TORSO FIGURE -->
+  <div class="figure-wrap" id="figure-wrap">
+    <svg class="torso-svg" viewBox="0 0 260 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M112 8 Q108 26 106 44 L154 44 Q152 26 148 8 Z" stroke="rgba(244,239,233,0.22)" stroke-width="1.4" fill="rgba(244,239,233,0.03)"/>
+      <path d="M106 44 Q82 48 62 64 Q42 80 38 108 L36 166 Q34 182 40 192 L40 386 Q40 400 54 400 L206 400 Q220 400 220 386 L220 192 Q226 182 224 166 L222 108 Q218 80 198 64 Q178 48 154 44 Z" stroke="rgba(244,239,233,0.28)" stroke-width="1.4" fill="rgba(244,239,233,0.04)"/>
+      <path d="M106 52 Q130 59 154 52" stroke="rgba(244,239,233,0.12)" stroke-width="1" fill="none"/>
+      <ellipse cx="119" cy="58" rx="10" ry="7" fill="rgba(145,200,228,0.15)" stroke="#91c8e4" stroke-width="1.2"/>
+      <ellipse cx="139" cy="58" rx="10" ry="7" fill="rgba(145,200,228,0.15)" stroke="#91c8e4" stroke-width="1.2"/>
+      <line x1="130" y1="44" x2="130" y2="106" stroke="rgba(145,200,228,0.22)" stroke-width="1.8"/>
+      <path d="M130 106 Q112 110 78 116" stroke="rgba(145,200,228,0.18)" stroke-width="1.3" fill="none"/>
+      <path d="M130 106 Q148 110 178 116" stroke="rgba(145,200,228,0.18)" stroke-width="1.3" fill="none"/>
+      <path d="M70 116 Q57 122 55 145 Q53 167 59 187 Q63 199 74 200 Q85 200 87 187 L90 155 Q89 130 80 116 Z" fill="rgba(145,200,228,0.08)" stroke="rgba(145,200,228,0.38)" stroke-width="1.1"/>
+      <path d="M176 116 Q189 122 191 145 Q193 167 187 187 Q183 199 172 200 Q161 200 159 187 L156 155 Q157 130 166 116 Z" fill="rgba(145,200,228,0.08)" stroke="rgba(145,200,228,0.38)" stroke-width="1.1"/>
+      <path d="M108 116 Q108 103 118 103 Q127 103 123 111 Q119 103 132 103 Q143 103 139 116 Q135 129 128 138 Q121 129 108 116 Z" fill="rgba(230,103,79,0.2)" stroke="#e6674f" stroke-width="1.3"/>
+      <path d="M140 164 Q168 160 184 180 Q190 198 182 216 Q173 230 153 232 Q136 232 130 218 Q123 200 128 180 Q130 166 140 164 Z" fill="rgba(244,189,66,0.13)" stroke="#f4bd42" stroke-width="1.2"/>
+      <path d="M96 170 Q85 170 81 184 Q78 198 85 210 Q92 220 105 219 Q118 218 120 204 Q123 189 113 176 Q106 168 96 170 Z" fill="rgba(244,189,66,0.07)" stroke="rgba(244,189,66,0.32)" stroke-width="1"/>
+      <ellipse cx="102" cy="272" rx="13" ry="19" fill="rgba(230,103,79,0.09)" stroke="rgba(230,103,79,0.42)" stroke-width="1"/>
+      <ellipse cx="162" cy="272" rx="13" ry="19" fill="rgba(230,103,79,0.09)" stroke="rgba(230,103,79,0.42)" stroke-width="1"/>
+      <line x1="130" y1="246" x2="130" y2="304" stroke="rgba(244,239,233,0.07)" stroke-width="3"/>
+      <circle cx="58" cy="158" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+      <circle cx="202" cy="158" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+      <circle cx="52" cy="218" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+      <circle cx="208" cy="218" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+      <path d="M90 316 Q78 318 73 337 Q69 357 80 372 Q95 386 130 388 Q165 386 180 372 Q191 357 187 337 Q182 318 170 316 Q153 312 130 312 Q107 312 90 316 Z" fill="rgba(231,180,208,0.12)" stroke="#e7b4d0" stroke-width="1.3"/>
+      <ellipse cx="130" cy="330" rx="4" ry="2.5" stroke="rgba(231,180,208,0.35)" stroke-width="1" fill="none"/>
+      <circle cx="130" cy="354" r="16" fill="rgba(231,180,208,0.06)" stroke="rgba(231,180,208,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+      <circle cx="130" cy="354" r="7" fill="rgba(231,180,208,0.13)" stroke="rgba(231,180,208,0.3)" stroke-width="1"/>
+    </svg>
+
+    <!-- hotspots — data-card links to card id -->
+    <div class="hotspot" style="left:50%; top:13%;" data-card="card-thyroid" data-color="#91c8e4">
+      <div class="dot" style="background:#91c8e4; color:#91c8e4;"></div>
+    </div>
+    <div class="hotspot" style="left:36%; top:27%;" data-card="card-cholesterol" data-color="#e6674f">
+      <div class="dot" style="background:#e6674f; color:#e6674f;"></div>
+    </div>
+    <div class="hotspot" style="left:67%; top:40%;" data-card="card-liver" data-color="#f4bd42">
+      <div class="dot" style="background:#f4bd42; color:#f4bd42;"></div>
+    </div>
+    <div class="hotspot" style="left:24%; top:45%;" data-card="card-immune" data-color="#0a8574">
+      <div class="dot" style="background:#0a8574; color:#0a8574;"></div>
+    </div>
+    <div class="hotspot" style="left:64%; top:60%;" data-card="card-kidney" data-color="#e6674f">
+      <div class="dot" style="background:#e6674f; color:#e6674f;"></div>
+    </div>
+    <div class="hotspot" style="left:50%; top:84%;" data-card="card-pregnancy" data-color="#e7b4d0">
+      <div class="dot" style="background:#e7b4d0; color:#e7b4d0;"></div>
+    </div>
+  </div>
+
+  <!-- CARDS 2x3 GRID -->
+  <div class="cards-grid" id="cards-grid">
+
+    <div class="card" id="card-thyroid" style="border-left-color:#91c8e4;">
       <p class="card-title" style="color:#91c8e4;">Thyroid disruption</p>
       <p class="card-body">Interferes with hormone production, affecting metabolism, energy, and growth</p>
     </div>
-    <div class="card" style="border-right-color:#e6674f;">
+
+    <div class="card" id="card-cholesterol" style="border-left-color:#e6674f;">
       <p class="card-title" style="color:#e6674f;">Higher cholesterol</p>
       <p class="card-body">Linked to elevated LDL cholesterol and increased cardiovascular disease risk</p>
     </div>
-    <div class="card" style="border-right-color:#0a8574;">
+
+    <div class="card" id="card-immune" style="border-left-color:#0a8574;">
       <p class="card-title" style="color:#0a8574;">Immune suppression</p>
       <p class="card-body">Reduces vaccine effectiveness and weakens the body's ability to fight infection</p>
     </div>
-  </div>
 
-  <!-- CENTRE TORSO -->
-  <div class="centre">
-
-    <svg class="torso-svg" viewBox="0 0 300 480" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-      <!-- neck -->
-      <path d="M128 10 Q124 30 122 48 L178 48 Q176 30 172 10 Z"
-            stroke="rgba(244,239,233,0.22)" stroke-width="1.4" fill="rgba(244,239,233,0.03)"/>
-      <!-- torso -->
-      <path d="M122 48 Q96 52 74 68 Q52 86 48 114 L46 172 Q44 188 50 198 L50 400 Q50 414 64 414 L236 414 Q250 414 250 400 L250 198 Q256 188 254 172 L252 114 Q248 86 226 68 Q204 52 178 48 Z"
-            stroke="rgba(244,239,233,0.28)" stroke-width="1.4" fill="rgba(244,239,233,0.04)"/>
-      <!-- collarbone -->
-      <path d="M122 56 Q150 63 178 56" stroke="rgba(244,239,233,0.12)" stroke-width="1" fill="none"/>
-
-      <!-- Thyroid -->
-      <ellipse cx="137" cy="63" rx="11" ry="8" fill="rgba(145,200,228,0.15)" stroke="#91c8e4" stroke-width="1.2"/>
-      <ellipse cx="159" cy="63" rx="11" ry="8" fill="rgba(145,200,228,0.15)" stroke="#91c8e4" stroke-width="1.2"/>
-
-      <!-- Trachea + bronchi -->
-      <line x1="150" y1="48" x2="150" y2="112" stroke="rgba(145,200,228,0.22)" stroke-width="1.8"/>
-      <path d="M150 112 Q130 116 92 122" stroke="rgba(145,200,228,0.18)" stroke-width="1.3" fill="none"/>
-      <path d="M150 112 Q170 116 202 122" stroke="rgba(145,200,228,0.18)" stroke-width="1.3" fill="none"/>
-
-      <!-- Lungs -->
-      <path d="M84 122 Q70 128 68 152 Q66 175 72 196 Q77 208 88 209 Q100 209 102 196 L105 162 Q104 136 94 122 Z"
-            fill="rgba(145,200,228,0.08)" stroke="rgba(145,200,228,0.38)" stroke-width="1.1"/>
-      <path d="M202 122 Q216 128 218 152 Q220 175 214 196 Q209 208 198 209 Q186 209 184 196 L181 162 Q182 136 192 122 Z"
-            fill="rgba(145,200,228,0.08)" stroke="rgba(145,200,228,0.38)" stroke-width="1.1"/>
-
-      <!-- Heart -->
-      <path d="M124 122 Q124 108 135 108 Q144 108 140 117 Q136 108 150 108 Q162 108 158 122 Q154 136 142 146 Q130 136 124 122 Z"
-            fill="rgba(230,103,79,0.2)" stroke="#e6674f" stroke-width="1.3"/>
-
-      <!-- Liver -->
-      <path d="M158 172 Q190 168 206 190 Q212 208 204 228 Q195 242 173 244 Q155 244 148 228 Q141 210 146 188 Q148 174 158 172 Z"
-            fill="rgba(244,189,66,0.13)" stroke="#f4bd42" stroke-width="1.2"/>
-
-      <!-- Stomach -->
-      <path d="M112 178 Q100 178 96 193 Q93 208 100 221 Q108 232 122 231 Q136 230 138 215 Q141 199 131 185 Q123 176 112 178 Z"
-            fill="rgba(244,189,66,0.07)" stroke="rgba(244,189,66,0.32)" stroke-width="1"/>
-
-      <!-- Kidneys -->
-      <ellipse cx="116" cy="286" rx="14" ry="20" fill="rgba(230,103,79,0.09)" stroke="rgba(230,103,79,0.42)" stroke-width="1"/>
-      <ellipse cx="184" cy="286" rx="14" ry="20" fill="rgba(230,103,79,0.09)" stroke="rgba(230,103,79,0.42)" stroke-width="1"/>
-      <line x1="150" y1="260" x2="150" y2="318" stroke="rgba(244,239,233,0.07)" stroke-width="3"/>
-
-      <!-- Immune nodes -->
-      <circle cx="72" cy="164" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
-      <circle cx="228" cy="164" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
-      <circle cx="66" cy="228" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
-      <circle cx="234" cy="228" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
-
-      <!-- Pregnant belly -->
-      <path d="M106 330 Q94 332 88 352 Q84 374 96 390 Q112 406 150 408 Q188 406 204 390 Q216 374 212 352 Q206 332 194 330 Q174 326 150 326 Q126 326 106 330 Z"
-            fill="rgba(231,180,208,0.12)" stroke="#e7b4d0" stroke-width="1.3"/>
-      <ellipse cx="150" cy="345" rx="4.5" ry="3" stroke="rgba(231,180,208,0.35)" stroke-width="1" fill="none"/>
-      <circle cx="150" cy="370" r="17" fill="rgba(231,180,208,0.06)" stroke="rgba(231,180,208,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
-      <circle cx="150" cy="370" r="8" fill="rgba(231,180,208,0.13)" stroke="rgba(231,180,208,0.3)" stroke-width="1"/>
-
-    </svg>
-
-
-
-    <!-- hotspot dots positioned over SVG -->
-    <div class="hotspot" style="left:50%; top:13%;">
-      <div class="dot" style="background:#91c8e4; color:#91c8e4;"></div>
-      <div class="popup above" style="border-top:2px solid #91c8e4;">
-        <p class="popup-title" style="color:#91c8e4;">Thyroid disruption</p>
-        Interferes with hormone production, affecting metabolism and growth
-      </div>
-    </div>
-
-    <div class="hotspot" style="left:38%; top:26%;">
-      <div class="dot" style="background:#e6674f; color:#e6674f;"></div>
-      <div class="popup left" style="border-top:2px solid #e6674f;">
-        <p class="popup-title" style="color:#e6674f;">Higher cholesterol</p>
-        Linked to elevated LDL and increased cardiovascular disease risk
-      </div>
-    </div>
-
-    <div class="hotspot" style="left:66%; top:40%;">
-      <div class="dot" style="background:#f4bd42; color:#f4bd42;"></div>
-      <div class="popup right" style="border-top:2px solid #f4bd42;">
-        <p class="popup-title" style="color:#f4bd42;">Liver & cancer risk</p>
-        Linked to liver damage and elevated kidney and testicular cancer risk
-      </div>
-    </div>
-
-    <div class="hotspot" style="left:26%; top:44%;">
-      <div class="dot" style="background:#0a8574; color:#0a8574;"></div>
-      <div class="popup left" style="border-top:2px solid #0a8574;">
-        <p class="popup-title" style="color:#0a8574;">Immune suppression</p>
-        Reduces vaccine effectiveness and weakens infection response
-      </div>
-    </div>
-
-    <div class="hotspot" style="left:65%; top:58%;">
-      <div class="dot" style="background:#e6674f; color:#e6674f;"></div>
-      <div class="popup right" style="border-top:2px solid #e6674f;">
-        <p class="popup-title" style="color:#e6674f;">Kidney damage</p>
-        Associated with chronic kidney disease and significantly elevated cancer risk
-      </div>
-    </div>
-
-    <div class="hotspot" style="left:50%; top:80%;">
-      <div class="dot" style="background:#e7b4d0; color:#e7b4d0;"></div>
-      <div class="popup above" style="border-top:2px solid #e7b4d0;">
-        <p class="popup-title" style="color:#e7b4d0;">Pregnancy & fetal harm</p>
-        Crosses the placenta, appears in breast milk — linked to low birth weight and preeclampsia
-      </div>
-    </div>
-
-  </div>
-
-  <!-- RIGHT CARDS -->
-  <div class="col right">
-    <div class="card" style="border-left-color:#f4bd42;">
+    <div class="card" id="card-liver" style="border-left-color:#f4bd42;">
       <p class="card-title" style="color:#f4bd42;">Liver & cancer risk</p>
       <p class="card-body">Linked to liver damage and increased risk of kidney and testicular cancers</p>
     </div>
-    <div class="card" style="border-left-color:#e6674f;">
+
+    <div class="card" id="card-kidney" style="border-left-color:#e6674f;">
       <p class="card-title" style="color:#e6674f;">Kidney damage</p>
       <p class="card-body">Associated with chronic kidney disease and significantly elevated kidney cancer risk</p>
     </div>
-    <div class="card" style="border-left-color:#e7b4d0;">
+
+    <div class="card" id="card-pregnancy" style="border-left-color:#e7b4d0;">
       <p class="card-title" style="color:#e7b4d0;">Pregnancy & fetal harm</p>
       <p class="card-body">Crosses the placenta and appears in breast milk — linked to low birth weight, preeclampsia, and disrupted fetal development</p>
     </div>
-  </div>
 
+  </div>
 </div>
+
+<script>
+const canvas = document.getElementById('connector-canvas');
+const ctx = canvas.getContext('2d');
+const layout = document.getElementById('layout');
+
+function resizeCanvas() {
+  canvas.width = layout.offsetWidth;
+  canvas.height = layout.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function drawLine(hotspot, card, color) {
+  resizeCanvas();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const layoutRect = layout.getBoundingClientRect();
+
+  // hotspot centre
+  const hRect = hotspot.getBoundingClientRect();
+  const hx = hRect.left + hRect.width / 2 - layoutRect.left;
+  const hy = hRect.top + hRect.height / 2 - layoutRect.top;
+
+  // card left edge centre
+  const cRect = card.getBoundingClientRect();
+  const cx = cRect.left - layoutRect.left;
+  const cy = cRect.top + cRect.height / 2 - layoutRect.top;
+
+  // draw dashed line with a slight curve
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.setLineDash([5, 4]);
+  ctx.globalAlpha = 0.75;
+  ctx.beginPath();
+  ctx.moveTo(hx, hy);
+  // control point curves toward the right
+  const cpx = (hx + cx) / 2;
+  const cpy = (hy + cy) / 2;
+  ctx.quadraticCurveTo(cpx, cpy, cx, cy);
+  ctx.stroke();
+
+  // dot at card end
+  ctx.setLineDash([]);
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function clearAll() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  document.querySelectorAll('.card').forEach(c => {
+    c.classList.remove('highlighted');
+    c.style.boxShadow = '';
+  });
+  document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('active'));
+}
+
+document.querySelectorAll('.hotspot').forEach(hotspot => {
+  const activate = () => {
+    clearAll();
+    const cardId = hotspot.dataset.card;
+    const color = hotspot.dataset.color;
+    const card = document.getElementById(cardId);
+    if (!card) return;
+
+    hotspot.classList.add('active');
+    card.classList.add('highlighted');
+    card.style.boxShadow = `0 0 0 2px ${color}, 0 4px 16px rgba(0,0,0,0.3)`;
+
+    // small delay so layout is painted before we measure
+    requestAnimationFrame(() => drawLine(hotspot, card, color));
+  };
+
+  hotspot.addEventListener('mouseenter', activate);
+  hotspot.addEventListener('click', activate);
+});
+
+document.addEventListener('mouseleave', clearAll);
+layout.addEventListener('mouseleave', clearAll);
+</script>
 
 </body>
 </html>

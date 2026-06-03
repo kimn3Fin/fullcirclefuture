@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landfill Health Effects — Full Circle Future</title>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #2a1d3d;
+    --off-white: #f4efe9;
+    --yellow: #f4bd42;
+    --red: #e6674f;
+    --green: #0a8574;
+    --light-blue: #91c8e4;
+    --pink: #e7b4d0;
+    --orange: #e8874a;
+    --lime: #7ec8a0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Alexandria', sans-serif;
+    background: var(--purple);
+    color: var(--off-white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 2rem;
+  }
+
+  /* ── HEADER ── */
+  .header-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 0.75rem;
+  }
+  .label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--yellow);
+  }
+
+  /* ── TOGGLE ── */
+  .toggle-wrap {
+    display: flex;
+    gap: 0;
+    background: rgba(244,239,233,0.08);
+    border-radius: 30px;
+    padding: 3px;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 1rem;
+  }
+  .toggle-btn {
+    flex: 1;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 26px;
+    font-family: 'Alexandria', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s;
+    background: transparent;
+    color: rgba(244,239,233,0.45);
+  }
+  .toggle-btn.active {
+    color: var(--purple);
+  }
+  .toggle-btn.pfas.active {
+    background: var(--light-blue);
+  }
+  .toggle-btn.gas.active {
+    background: #D8A0C8;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 260px 1fr;
+    gap: 0 1.5rem;
+    width: 100%;
+    max-width: 900px;
+    align-items: center;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .col.right { align-items: flex-start; }
+  .col.left  { align-items: flex-end; }
+
+  /* ── CARDS ── */
+  .card {
+    background: rgba(244,239,233,0.05);
+    border-radius: 7px;
+    padding: 9px 12px;
+    width: 100%;
+    max-width: 230px;
+    border-left: 3px solid transparent;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .col.left .card {
+    border-left: none;
+    border-right: 3px solid transparent;
+    text-align: right;
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 3px;
+    line-height: 1.2;
+  }
+  .card-body {
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(244,239,233,0.55);
+    line-height: 1.45;
+  }
+
+  /* show/hide by mode */
+  .pfas-card, .gas-card { transition: opacity 0.3s, transform 0.25s; }
+  body.mode-pfas .gas-card  { opacity: 0; pointer-events: none; position: absolute; }
+  body.mode-pfas .pfas-card { opacity: 1; position: relative; }
+  body.mode-gas  .pfas-card { opacity: 0; pointer-events: none; position: absolute; }
+  body.mode-gas  .gas-card  { opacity: 1; position: relative; }
+
+  /* card slot wrapper so absolute positioning doesn't collapse height */
+  .card-slot { position: relative; min-height: 70px; width: 100%; max-width: 230px; }
+
+  /* ── FIGURE ── */
+  .figure-wrap {
+    position: relative;
+    width: 260px;
+    height: 420px;
+    flex-shrink: 0;
+  }
+  .body-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: visible;
+  }
+
+  /* organs fade between modes */
+  .pfas-organ { transition: opacity 0.35s; }
+  .gas-organ  { transition: opacity 0.35s; }
+  body.mode-pfas .gas-organ  { opacity: 0; }
+  body.mode-pfas .pfas-organ { opacity: 1; }
+  body.mode-gas  .pfas-organ { opacity: 0; }
+  body.mode-gas  .gas-organ  { opacity: 1; }
+  /* shared anatomy always visible */
+  .shared-organ { opacity: 1; }
+
+  /* ── HOTSPOTS ── */
+  .hotspot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    transition: opacity 0.3s;
+  }
+  .pfas-dot { }
+  .gas-dot  { }
+  body.mode-pfas .gas-dot  { opacity: 0; pointer-events: none; }
+  body.mode-pfas .pfas-dot { opacity: 1; }
+  body.mode-gas  .pfas-dot { opacity: 0; pointer-events: none; }
+  body.mode-gas  .gas-dot  { opacity: 1; }
+
+  .dot {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    border: 2px solid var(--purple);
+    position: relative;
+  }
+  .dot::after {
+    content: '';
+    position: absolute;
+    top: -5px; left: -5px;
+    width: 17px; height: 17px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    opacity: 0;
+    animation: pulse 2.8s ease-out infinite;
+  }
+  @keyframes pulse {
+    0%   { transform: scale(0.5); opacity: 0.7; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+
+  /* ── BOTTOM NOTE ── */
+  .bottom-note {
+    margin-top: 1.1rem;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 11.5px;
+    font-weight: 300;
+    line-height: 1.6;
+    text-align: center;
+    transition: background 0.3s, border-color 0.3s, color 0.3s;
+  }
+  body.mode-pfas .bottom-note {
+    background: rgba(145,200,228,0.08);
+    border: 1px solid rgba(145,200,228,0.22);
+    color: rgba(244,239,233,0.65);
+  }
+  body.mode-gas .bottom-note {
+    background: rgba(216,160,200,0.08);
+    border: 1px solid rgba(216,160,200,0.22);
+    color: rgba(244,239,233,0.65);
+  }
+  .bottom-note strong { font-weight: 600; }
+  body.mode-pfas .bottom-note strong { color: var(--light-blue); }
+  body.mode-gas  .bottom-note strong { color: #D8A0C8; }
+
+  /* source line */
+  .source-line {
+    margin-top: 0.6rem;
+    font-size: 10px;
+    font-weight: 300;
+    color: rgba(244,239,233,0.28);
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+  .source-line a { color: rgba(244,239,233,0.38); }
+
+  @media (max-width: 680px) {
+    .layout { grid-template-columns: 1fr; }
+    .figure-wrap { margin: 0 auto; }
+    .col.left, .col.right { align-items: flex-start; }
+    .col.left .card { border-left: 3px solid transparent; border-right: none; text-align: left; }
+  }
+</style>
+</head>
+<body class="mode-pfas">
+
+<!-- HEADER -->
+<div class="header-row">
+  <p class="label">Health effects of landfill exposure</p>
+</div>
+
+<!-- TOGGLE -->
+<div class="toggle-wrap">
+  <button class="toggle-btn pfas active" id="btnPfas" onclick="setMode('pfas')">PFAS &amp; leachate</button>
+  <button class="toggle-btn gas" id="btnGas" onclick="setMode('gas')">Landfill gas &amp; chemicals</button>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- LEFT CARDS -->
+  <div class="col left">
+
+    <!-- PFAS left -->
+    <div class="card-slot">
+      <div class="card pfas-card" style="border-right-color:#91c8e4;">
+        <p class="card-title" style="color:#91c8e4;">Thyroid disruption</p>
+        <p class="card-body">Interferes with hormone production, affecting metabolism, energy, and growth</p>
+      </div>
+      <div class="card gas-card" style="border-right-color:#D8A0C8;">
+        <p class="card-title" style="color:#D8A0C8;">Respiratory disease</p>
+        <p class="card-body">Volatile organic compounds irritate airways and worsen asthma and chronic lung disease</p>
+      </div>
+    </div>
+
+    <div class="card-slot">
+      <div class="card pfas-card" style="border-right-color:#e6674f;">
+        <p class="card-title" style="color:#e6674f;">Higher cholesterol</p>
+        <p class="card-body">Linked to elevated LDL cholesterol and increased cardiovascular disease risk</p>
+      </div>
+      <div class="card gas-card" style="border-right-color:#e8874a;">
+        <p class="card-title" style="color:#e8874a;">Cardiovascular disease</p>
+        <p class="card-body">Long-term exposure to landfill VOCs associated with elevated rates of heart disease and stroke</p>
+      </div>
+    </div>
+
+    <div class="card-slot">
+      <div class="card pfas-card" style="border-right-color:#0a8574;">
+        <p class="card-title" style="color:#0a8574;">Immune suppression</p>
+        <p class="card-body">Reduces vaccine effectiveness and weakens the body's ability to fight infection</p>
+      </div>
+      <div class="card gas-card" style="border-right-color:#7ec8a0;">
+        <p class="card-title" style="color:#7ec8a0;">Neurological effects</p>
+        <p class="card-body">Benzene, toluene, and other VOCs linked to headaches, cognitive impairment, and nervous system damage</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CENTRE FIGURE -->
+  <div class="figure-wrap">
+    <svg class="body-svg" viewBox="0 0 260 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- neck -->
+      <path class="shared-organ" d="M112 8 Q109 24 108 40 L152 40 Q151 24 148 8 Z"
+            stroke="rgba(244,239,233,0.22)" stroke-width="1.4" fill="rgba(244,239,233,0.03)"/>
+      <!-- torso -->
+      <path class="shared-organ" d="M108 40 Q86 44 68 58 Q50 74 46 100 L44 158 Q43 174 48 182 L48 346 Q48 358 60 358 L200 358 Q212 358 212 346 L212 182 Q217 174 216 158 L214 100 Q206 74 188 58 Q170 44 152 40 Z"
+            stroke="rgba(244,239,233,0.28)" stroke-width="1.4" fill="rgba(244,239,233,0.04)"/>
+      <!-- collarbone -->
+      <path class="shared-organ" d="M108 48 Q130 54 152 48" stroke="rgba(244,239,233,0.12)" stroke-width="1" fill="none"/>
+
+      <!-- Thyroid — PFAS -->
+      <g class="pfas-organ" opacity="0.9">
+        <ellipse cx="120" cy="55" rx="10" ry="7" fill="rgba(145,200,228,0.15)" stroke="#91c8e4" stroke-width="1.2"/>
+        <ellipse cx="140" cy="55" rx="10" ry="7" fill="rgba(145,200,228,0.15)" stroke="#91c8e4" stroke-width="1.2"/>
+      </g>
+
+      <!-- Brain — gas/chemicals -->
+      <g class="gas-organ">
+        <ellipse cx="130" cy="18" rx="22" ry="16" fill="rgba(216,160,200,0.15)" stroke="#D8A0C8" stroke-width="1.2"/>
+        <path d="M115 18 Q118 10 130 12 Q142 10 145 18" stroke="#D8A0C8" stroke-width="0.8" fill="none" opacity="0.5"/>
+        <path d="M120 22 Q122 28 130 26 Q138 28 140 22" stroke="#D8A0C8" stroke-width="0.8" fill="none" opacity="0.5"/>
+      </g>
+
+      <!-- Trachea + bronchi — shared -->
+      <line class="shared-organ" x1="130" y1="40" x2="130" y2="98" stroke="rgba(200,200,220,0.2)" stroke-width="1.8"/>
+      <path class="shared-organ" d="M130 98 Q114 102 82 108" stroke="rgba(200,200,220,0.18)" stroke-width="1.3" fill="none"/>
+      <path class="shared-organ" d="M130 98 Q146 102 174 108" stroke="rgba(200,200,220,0.18)" stroke-width="1.3" fill="none"/>
+
+      <!-- Lungs — PFAS (blue tint) -->
+      <path class="pfas-organ" d="M72 108 Q60 114 58 136 Q56 158 62 178 Q66 190 76 191 Q86 191 88 178 L91 148 Q90 122 80 108 Z"
+            fill="rgba(145,200,228,0.08)" stroke="rgba(145,200,228,0.4)" stroke-width="1.1"/>
+      <path class="pfas-organ" d="M174 108 Q186 114 188 136 Q190 158 184 178 Q180 190 170 191 Q160 191 158 178 L155 148 Q156 122 166 108 Z"
+            fill="rgba(145,200,228,0.08)" stroke="rgba(145,200,228,0.4)" stroke-width="1.1"/>
+
+      <!-- Lungs — gas (pink tint, more inflamed) -->
+      <path class="gas-organ" d="M72 108 Q60 114 58 136 Q56 158 62 178 Q66 190 76 191 Q86 191 88 178 L91 148 Q90 122 80 108 Z"
+            fill="rgba(216,160,200,0.12)" stroke="#D8A0C8" stroke-width="1.3"/>
+      <path class="gas-organ" d="M174 108 Q186 114 188 136 Q190 158 184 178 Q180 190 170 191 Q160 191 158 178 L155 148 Q156 122 166 108 Z"
+            fill="rgba(216,160,200,0.12)" stroke="#D8A0C8" stroke-width="1.3"/>
+
+      <!-- Heart — PFAS -->
+      <path class="pfas-organ" d="M108 108 Q108 95 118 95 Q126 95 122 103 Q118 95 132 95 Q142 95 138 108 Q134 121 122 130 Q110 121 108 108 Z"
+            fill="rgba(230,103,79,0.18)" stroke="#e6674f" stroke-width="1.3"/>
+
+      <!-- Heart — gas -->
+      <path class="gas-organ" d="M108 108 Q108 95 118 95 Q126 95 122 103 Q118 95 132 95 Q142 95 138 108 Q134 121 122 130 Q110 121 108 108 Z"
+            fill="rgba(232,135,74,0.18)" stroke="#e8874a" stroke-width="1.3"/>
+
+      <!-- Liver — PFAS -->
+      <path class="pfas-organ" d="M136 158 Q164 154 178 174 Q183 190 176 208 Q168 220 150 222 Q134 222 128 208 Q122 192 126 172 Q128 160 136 158 Z"
+            fill="rgba(244,189,66,0.13)" stroke="#f4bd42" stroke-width="1.2"/>
+
+      <!-- Stomach — shared -->
+      <path class="shared-organ" d="M96 165 Q86 165 82 179 Q79 193 86 205 Q93 215 106 214 Q119 213 121 199 Q124 184 115 171 Q108 163 96 165 Z"
+            fill="rgba(244,189,66,0.06)" stroke="rgba(244,189,66,0.2)" stroke-width="1"/>
+
+      <!-- Kidneys — PFAS -->
+      <ellipse class="pfas-organ" cx="100" cy="256" rx="13" ry="19" fill="rgba(230,103,79,0.09)" stroke="rgba(230,103,79,0.45)" stroke-width="1"/>
+      <ellipse class="pfas-organ" cx="160" cy="256" rx="13" ry="19" fill="rgba(230,103,79,0.09)" stroke="rgba(230,103,79,0.45)" stroke-width="1"/>
+
+      <!-- Bladder/reproductive — gas (leukemia, bladder cancer from NYSDOH study) -->
+      <ellipse class="gas-organ" cx="130" cy="310" rx="18" ry="14" fill="rgba(232,135,74,0.1)" stroke="#e8874a" stroke-width="1.1"/>
+      <path class="gas-organ" d="M118 298 Q130 290 142 298" stroke="#e8874a" stroke-width="0.9" fill="none" opacity="0.5"/>
+
+      <!-- Spine -->
+      <line class="shared-organ" x1="130" y1="228" x2="130" y2="288" stroke="rgba(244,239,233,0.06)" stroke-width="3"/>
+
+      <!-- Immune nodes — PFAS -->
+      <circle class="pfas-organ" cx="68" cy="148" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+      <circle class="pfas-organ" cx="192" cy="148" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+      <circle class="pfas-organ" cx="62" cy="210" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+      <circle class="pfas-organ" cx="198" cy="210" r="3.5" fill="rgba(10,133,116,0.2)" stroke="#0a8574" stroke-width="1"/>
+
+      <!-- Lymph nodes — gas (cancer) -->
+      <circle class="gas-organ" cx="68" cy="148" r="3.5" fill="rgba(126,200,160,0.2)" stroke="#7ec8a0" stroke-width="1"/>
+      <circle class="gas-organ" cx="192" cy="148" r="3.5" fill="rgba(126,200,160,0.2)" stroke="#7ec8a0" stroke-width="1"/>
+      <circle class="gas-organ" cx="62" cy="210" r="3.5" fill="rgba(126,200,160,0.2)" stroke="#7ec8a0" stroke-width="1"/>
+      <circle class="gas-organ" cx="198" cy="210" r="3.5" fill="rgba(126,200,160,0.2)" stroke="#7ec8a0" stroke-width="1"/>
+
+      <!-- Pregnant belly — PFAS -->
+      <path class="pfas-organ" d="M92 296 Q82 298 78 316 Q75 334 86 348 Q100 360 130 362 Q160 360 174 348 Q185 334 182 316 Q178 298 168 296 Q152 292 130 292 Q108 292 92 296 Z"
+            fill="rgba(231,180,208,0.12)" stroke="#e7b4d0" stroke-width="1.3"/>
+      <ellipse class="pfas-organ" cx="130" cy="308" rx="4" ry="2.5" stroke="rgba(231,180,208,0.35)" stroke-width="1" fill="none"/>
+      <circle class="pfas-organ" cx="130" cy="330" r="15" fill="rgba(231,180,208,0.06)" stroke="rgba(231,180,208,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+      <circle class="pfas-organ" cx="130" cy="330" r="7" fill="rgba(231,180,208,0.12)" stroke="rgba(231,180,208,0.28)" stroke-width="1"/>
+
+      <!-- Birth outcomes (baby outline) — gas -->
+      <path class="gas-organ" d="M92 296 Q82 298 78 316 Q75 334 86 348 Q100 360 130 362 Q160 360 174 348 Q185 334 182 316 Q178 298 168 296 Q152 292 130 292 Q108 292 92 296 Z"
+            fill="rgba(231,180,208,0.08)" stroke="rgba(231,180,208,0.4)" stroke-width="1.1" stroke-dasharray="4 3"/>
+      <circle class="gas-organ" cx="130" cy="330" r="10" fill="rgba(231,180,208,0.1)" stroke="rgba(231,180,208,0.3)" stroke-width="1"/>
+
+    </svg>
+
+    <!-- PFAS hotspots -->
+    <div class="hotspot pfas-dot" style="left:130px; top:55px;">
+      <div class="dot" style="background:#91c8e4; color:#91c8e4;"></div>
+    </div>
+    <div class="hotspot pfas-dot" style="left:100px; top:112px;">
+      <div class="dot" style="background:#e6674f; color:#e6674f;"></div>
+    </div>
+    <div class="hotspot pfas-dot" style="left:162px; top:185px;">
+      <div class="dot" style="background:#f4bd42; color:#f4bd42;"></div>
+    </div>
+    <div class="hotspot pfas-dot" style="left:62px; top:210px;">
+      <div class="dot" style="background:#0a8574; color:#0a8574;"></div>
+    </div>
+    <div class="hotspot pfas-dot" style="left:162px; top:256px;">
+      <div class="dot" style="background:#e6674f; color:#e6674f;"></div>
+    </div>
+    <div class="hotspot pfas-dot" style="left:130px; top:348px;">
+      <div class="dot" style="background:#e7b4d0; color:#e7b4d0;"></div>
+    </div>
+
+    <!-- Gas hotspots -->
+    <div class="hotspot gas-dot" style="left:130px; top:18px;">
+      <div class="dot" style="background:#D8A0C8; color:#D8A0C8;"></div>
+    </div>
+    <div class="hotspot gas-dot" style="left:72px; top:148px;">
+      <div class="dot" style="background:#D8A0C8; color:#D8A0C8;"></div>
+    </div>
+    <div class="hotspot gas-dot" style="left:188px; top:148px;">
+      <div class="dot" style="background:#D8A0C8; color:#D8A0C8;"></div>
+    </div>
+    <div class="hotspot gas-dot" style="left:112px; top:112px;">
+      <div class="dot" style="background:#e8874a; color:#e8874a;"></div>
+    </div>
+    <div class="hotspot gas-dot" style="left:62px; top:210px;">
+      <div class="dot" style="background:#7ec8a0; color:#7ec8a0;"></div>
+    </div>
+    <div class="hotspot gas-dot" style="left:130px; top:310px;">
+      <div class="dot" style="background:#e8874a; color:#e8874a;"></div>
+    </div>
+    <div class="hotspot gas-dot" style="left:130px; top:348px;">
+      <div class="dot" style="background:#e7b4d0; color:#e7b4d0;"></div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT CARDS -->
+  <div class="col right">
+
+    <div class="card-slot">
+      <div class="card pfas-card" style="border-left-color:#f4bd42;">
+        <p class="card-title" style="color:#f4bd42;">Liver &amp; cancer risk</p>
+        <p class="card-body">Linked to liver damage and increased risk of kidney and testicular cancers</p>
+      </div>
+      <div class="card gas-card" style="border-left-color:#D8A0C8;">
+        <p class="card-title" style="color:#D8A0C8;">Cancer</p>
+        <p class="card-body">Elevated rates of bladder cancer, leukemia, lung, larynx, and esophageal cancers documented near landfill sites</p>
+      </div>
+    </div>
+
+    <div class="card-slot">
+      <div class="card pfas-card" style="border-left-color:#e6674f;">
+        <p class="card-title" style="color:#e6674f;">Kidney damage</p>
+        <p class="card-body">Associated with chronic kidney disease and significantly elevated kidney cancer risk</p>
+      </div>
+      <div class="card gas-card" style="border-left-color:#e8874a;">
+        <p class="card-title" style="color:#e8874a;">Bladder &amp; blood cancers</p>
+        <p class="card-body">Women near NY landfills found to be four times more likely to develop bladder cancer and leukemia</p>
+      </div>
+    </div>
+
+    <div class="card-slot">
+      <div class="card pfas-card" style="border-left-color:#e7b4d0;">
+        <p class="card-title" style="color:#e7b4d0;">Pregnancy &amp; fetal harm</p>
+        <p class="card-body">Crosses the placenta and appears in breast milk — linked to low birth weight, preeclampsia, and disrupted fetal development</p>
+      </div>
+      <div class="card gas-card" style="border-left-color:#e7b4d0;">
+        <p class="card-title" style="color:#e7b4d0;">Birth outcomes</p>
+        <p class="card-body">33% increased risk of congenital anomalies within 3km of a landfill; associations with low birth weight across multiple studies</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- BOTTOM NOTE -->
+<div class="bottom-note" id="bottomNote">
+  <strong id="bottomStrong">PFAS does not break down in the body.</strong>
+  <span id="bottomText"> It accumulates over years of low-level exposure — building up in blood, organs, and breast milk with no natural way out. The EPA set its first enforceable PFAS drinking water limit in 2024 at 4 parts per trillion.</span>
+</div>
+
+<p class="source-line">Full Circle Future analysis. Sources: NYSDOH 1998; NYC DOH Fresh Kills study; Dolk et al. 1998 (Lancet); Elliott et al. 2001 (BMJ); Porta et al. 2009 systematic review; NTP 2016; C8 Health Project.</p>
+
+<script>
+function setMode(mode) {
+  document.body.className = 'mode-' + mode;
+  document.getElementById('btnPfas').classList.toggle('active', mode === 'pfas');
+  document.getElementById('btnGas').classList.toggle('active', mode === 'gas');
+
+  const strong = document.getElementById('bottomStrong');
+  const text = document.getElementById('bottomText');
+
+  if (mode === 'pfas') {
+    strong.textContent = 'PFAS does not break down in the body.';
+    text.textContent = ' It accumulates over years of low-level exposure — building up in blood, organs, and breast milk with no natural way out. The EPA set its first enforceable PFAS drinking water limit in 2024 at 4 parts per trillion.';
+  } else {
+    strong.textContent = 'Landfill gas production continues for 50+ years.';
+    text.textContent = ' Volatile organic compounds including benzene, toluene, and vinyl chloride escape into surrounding air and can migrate through soil into nearby homes — even at sites that have been closed for decades.';
+  }
+}
+</script>
+
+</body>
+</html>

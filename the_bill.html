@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Bill — Full Circle Future</title>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple:     #2a1d3d;
+    --off-white:  #f4efe9;
+    --yellow:     #f4bd42;
+    --red:        #e6674f;
+    --green:      #0a8574;
+    --light-blue: #91c8e4;
+    --pink:       #e7b4d0;
+    --dark-blue:  #294480;
+    --green-light: #7ec8a0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Alexandria', sans-serif;
+    background: var(--purple);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+  }
+
+  /* ── BILL CARD ── */
+  .bill {
+    width: 100%;
+    max-width: 580px;
+    background: var(--off-white);
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* torn top edge */
+  .bill::before {
+    content: '';
+    position: absolute;
+    top: -10px; left: 0; right: 0;
+    height: 12px;
+    background: var(--off-white);
+    clip-path: polygon(
+      0% 100%, 2% 0%, 4% 100%, 6% 0%, 8% 100%, 10% 0%,
+      12% 100%, 14% 0%, 16% 100%, 18% 0%, 20% 100%, 22% 0%,
+      24% 100%, 26% 0%, 28% 100%, 30% 0%, 32% 100%, 34% 0%,
+      36% 100%, 38% 0%, 40% 100%, 42% 0%, 44% 100%, 46% 0%,
+      48% 100%, 50% 0%, 52% 100%, 54% 0%, 56% 100%, 58% 0%,
+      60% 100%, 62% 0%, 64% 100%, 66% 0%, 68% 100%, 70% 0%,
+      72% 100%, 74% 0%, 76% 100%, 78% 0%, 80% 100%, 82% 0%,
+      84% 100%, 86% 0%, 88% 100%, 90% 0%, 92% 100%, 94% 0%,
+      96% 100%, 98% 0%, 100% 100%
+    );
+  }
+
+  /* torn bottom edge */
+  .bill::after {
+    content: '';
+    position: absolute;
+    bottom: -10px; left: 0; right: 0;
+    height: 12px;
+    background: var(--off-white);
+    clip-path: polygon(
+      0% 0%, 2% 100%, 4% 0%, 6% 100%, 8% 0%, 10% 100%,
+      12% 0%, 14% 100%, 16% 0%, 18% 100%, 20% 0%, 22% 100%,
+      24% 0%, 26% 100%, 28% 0%, 30% 100%, 32% 0%, 34% 100%,
+      36% 0%, 38% 100%, 40% 0%, 42% 100%, 44% 0%, 46% 100%,
+      48% 0%, 50% 100%, 52% 0%, 54% 100%, 56% 0%, 58% 100%,
+      60% 0%, 62% 100%, 64% 0%, 66% 100%, 68% 0%, 70% 100%,
+      72% 0%, 74% 100%, 76% 0%, 78% 100%, 80% 0%, 82% 100%,
+      84% 0%, 86% 100%, 88% 0%, 90% 100%, 92% 0%, 94% 100%,
+      96% 0%, 98% 100%, 100% 0%
+    );
+  }
+
+  /* ── HEADER ── */
+  .bill-header {
+    background: var(--purple);
+    padding: 1.6rem 2rem 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .bill-from {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .bill-from-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(244,239,233,0.45);
+  }
+  .bill-from-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--off-white);
+    line-height: 1.2;
+  }
+  .bill-from-sub {
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(244,239,233,0.5);
+  }
+
+  .bill-to {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .bill-to-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(244,239,233,0.45);
+  }
+  .bill-to-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--yellow);
+    line-height: 1.2;
+  }
+  .bill-to-sub {
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(244,239,233,0.5);
+  }
+
+  /* ── BILL NUMBER ROW ── */
+  .bill-meta {
+    background: rgba(244,239,233,0.06);
+    padding: 0.6rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(244,239,233,0.1);
+  }
+  .bill-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .bill-meta-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(244,239,233,0.5);
+  }
+  .bill-meta-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(244,239,233,0.85);
+  }
+
+  /* ── LINE ITEMS ── */
+  .bill-body {
+    padding: 1.4rem 2rem 0;
+  }
+
+  .line-items-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1.5px solid rgba(42,29,61,0.15);
+    margin-bottom: 0.2rem;
+  }
+  .col-head {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(42,29,61,0.4);
+  }
+  .col-head.right { text-align: right; }
+
+  .line-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(42,29,61,0.08);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .line-item.visible { opacity: 1; transform: translateX(0); }
+
+  .item-left {}
+  .item-condition {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--purple);
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .item-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .item-desc {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: rgba(42,29,61,0.9);
+    line-height: 1.55;
+    padding-left: 14px;
+  }
+  .item-source {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(42,29,61,0.5);
+    padding-left: 14px;
+    margin-top: 3px;
+  }
+  .item-source a { color: inherit; text-decoration: underline; }
+
+  .item-right {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 110px;
+  }
+  .item-amount {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--purple);
+    white-space: nowrap;
+  }
+  .item-period {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(42,29,61,0.6);
+    white-space: nowrap;
+  }
+
+  /* ── DAYS SUBITEM ── */
+  .days-row {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.7rem 0 0.8rem;
+    border-bottom: 1px solid rgba(42,29,61,0.08);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .days-row.visible { opacity: 1; transform: translateX(0); }
+
+  .days-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+  .days-num {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--purple);
+    white-space: nowrap;
+  }
+  .days-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(42,29,61,0.85);
+    line-height: 1.4;
+  }
+  .days-label strong { font-weight: 600; color: var(--purple); }
+
+  /* mini calendar SVG wrapper */
+  .mini-cal { flex-shrink: 0; }
+
+  /* ── TOTALS ── */
+  .bill-totals {
+    padding: 1rem 2rem 1.2rem;
+    background: rgba(42,29,61,0.04);
+    border-top: 1.5px solid rgba(42,29,61,0.12);
+  }
+
+  .subtotal-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.3rem 0;
+  }
+  .subtotal-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(42,29,61,0.75);
+  }
+  .subtotal-amount {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(42,29,61,0.8);
+  }
+
+  .total-divider {
+    height: 1.5px;
+    background: var(--purple);
+    margin: 0.65rem 0 0.5rem;
+    opacity: 0.15;
+  }
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.2rem 0;
+  }
+  .total-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--purple);
+  }
+  .total-amount {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--purple);
+  }
+
+  /* ── DUE NOW STAMP ── */
+  .due-stamp-wrap {
+    padding: 1.2rem 2rem 1.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .due-note {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(42,29,61,0.75);
+    line-height: 1.55;
+    max-width: 280px;
+  }
+  .due-note strong { font-weight: 600; color: rgba(42,29,61,0.75); }
+
+  .due-stamp {
+    border: 3px solid var(--red);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    transform: rotate(-4deg);
+    opacity: 0;
+    animation: stampIn 0.4s cubic-bezier(0.175,0.885,0.32,1.4) 1.8s forwards;
+  }
+  @keyframes stampIn {
+    0%   { opacity: 0; transform: rotate(-4deg) scale(1.4); }
+    100% { opacity: 1; transform: rotate(-4deg) scale(1); }
+  }
+  .due-stamp-text {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .due-stamp-sub {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--red);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 2px;
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="bill">
+
+  <!-- HEADER -->
+  <div class="bill-header">
+    <div class="bill-from">
+      <span class="bill-from-label">Billed by</span>
+      <span class="bill-from-name">New York's Landfills</span>
+      <span class="bill-from-sub">86 active MSW sites across New York State</span>
+    </div>
+    <div class="bill-to">
+      <span class="bill-to-label">Billed to</span>
+      <span class="bill-to-name">New York Residents</span>
+      <span class="bill-to-sub">6.7 million within 5 miles of an active site</span>
+    </div>
+  </div>
+
+  <!-- BILL META -->
+  <div class="bill-meta">
+    <div class="bill-meta-item">
+      <span class="bill-meta-label">Invoice</span>
+      <span class="bill-meta-value">#NY-2025-ONGOING</span>
+    </div>
+    <div class="bill-meta-item">
+      <span class="bill-meta-label">Period</span>
+      <span class="bill-meta-value">Every year, indefinitely</span>
+    </div>
+    <div class="bill-meta-item">
+      <span class="bill-meta-label">Status</span>
+      <span class="bill-meta-value" style="color: var(--red); font-weight: 700;">UNPAID</span>
+    </div>
+  </div>
+
+  <!-- LINE ITEMS -->
+  <div class="bill-body">
+
+    <div class="line-items-header">
+      <span class="col-head">Condition / service rendered</span>
+      <span class="col-head right">Annual cost (NY)</span>
+    </div>
+
+    <!-- Asthma -->
+    <div class="line-item" data-delay="400">
+      <div class="item-left">
+        <div class="item-condition">
+          <div class="item-dot" style="background:#f4bd42;"></div>
+          Asthma
+        </div>
+        <div class="item-desc">Medical expenses and lost productivity across ~1.8 million New Yorkers living with asthma</div>
+        <div class="item-source">Est. NY share of $81.9B national burden · <a href="https://www.atsjournals.org/doi/10.1513/AnnalsATS.201703-259OC" target="_blank">Nurmagambetov et al. 2018</a></div>
+      </div>
+      <div class="item-right">
+        <div class="item-amount">~$5.7B</div>
+        <div class="item-period">per year</div>
+      </div>
+    </div>
+
+    <!-- Cancer + heart disease -->
+    <div class="line-item" data-delay="550">
+      <div class="item-left">
+        <div class="item-condition">
+          <div class="item-dot" style="background:#e6674f;"></div>
+          Cancer &amp; heart disease
+        </div>
+        <div class="item-desc">The two conditions most consistently elevated in communities near landfill sites</div>
+        <div class="item-source">Est. NY share of $320B+ national burden · AHA 2021; NCI Financial Burden of Cancer Care 2020</div>
+      </div>
+      <div class="item-right">
+        <div class="item-amount">~$22B+</div>
+        <div class="item-period">per year</div>
+      </div>
+    </div>
+
+    <!-- PFAS -->
+    <div class="line-item" data-delay="700">
+      <div class="item-left">
+        <div class="item-condition">
+          <div class="item-dot" style="background:#91c8e4;"></div>
+          PFAS exposure
+        </div>
+        <div class="item-desc">Healthcare, lost productivity, and reduced quality of life from forever chemical contamination</div>
+        <div class="item-source"><a href="https://www.nrdc.org/media/social-burden-pfas-forever-chemicals-new-york" target="_blank">NRDC, Social Burden of PFAS in New York, 2025</a> · NY-specific figure</div>
+      </div>
+      <div class="item-right">
+        <div class="item-amount">$2.7–4.4B</div>
+        <div class="item-period">per year</div>
+      </div>
+    </div>
+
+    <!-- Days row -->
+    <div class="days-row" data-delay="850">
+      <div class="days-block">
+        <!-- mini calendar: workdays -->
+        <div class="mini-cal">
+          <svg width="36" height="34" viewBox="0 0 36 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="5" width="34" height="28" rx="2.5" stroke="#0a8574" stroke-width="1.5" fill="rgba(10,133,116,0.06)"/>
+            <rect x="1" y="5" width="34" height="8" rx="2.5" fill="rgba(10,133,116,0.18)"/>
+            <line x1="1" y1="13" x2="35" y2="13" stroke="#0a8574" stroke-width="0.8"/>
+            <rect x="9" y="1" width="3" height="7" rx="1.5" fill="#0a8574"/>
+            <rect x="24" y="1" width="3" height="7" rx="1.5" fill="#0a8574"/>
+            <!-- crossed days -->
+            <g fill="#0a8574" opacity="0.9">
+              <rect x="4"  y="17" width="4" height="4" rx="0.8"/>
+              <rect x="11" y="17" width="4" height="4" rx="0.8"/>
+              <rect x="18" y="17" width="4" height="4" rx="0.8"/>
+            </g>
+            <g stroke="#f4efe9" stroke-width="1.2" stroke-linecap="round">
+              <line x1="4.8"  y1="17.8" x2="7.2" y2="20.2"/>
+              <line x1="7.2"  y1="17.8" x2="4.8" y2="20.2"/>
+              <line x1="11.8" y1="17.8" x2="14.2" y2="20.2"/>
+              <line x1="14.2" y1="17.8" x2="11.8" y2="20.2"/>
+              <line x1="18.8" y1="17.8" x2="21.2" y2="20.2"/>
+              <line x1="21.2" y1="17.8" x2="18.8" y2="20.2"/>
+            </g>
+            <g fill="#0a8574" opacity="0.2">
+              <rect x="4"  y="24" width="4" height="4" rx="0.8"/>
+              <rect x="11" y="24" width="4" height="4" rx="0.8"/>
+              <rect x="18" y="24" width="4" height="4" rx="0.8"/>
+              <rect x="25" y="24" width="4" height="4" rx="0.8"/>
+              <rect x="25" y="17" width="4" height="4" rx="0.8"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <div class="days-num" style="color:#0a8574;">13.8M</div>
+          <div class="days-label"><strong>adult workdays</strong> lost to asthma per year</div>
+        </div>
+      </div>
+
+      <div class="days-block">
+        <!-- mini calendar: school days -->
+        <div class="mini-cal">
+          <svg width="36" height="34" viewBox="0 0 36 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="5" width="34" height="28" rx="2.5" stroke="#e7b4d0" stroke-width="1.5" fill="rgba(231,180,208,0.06)"/>
+            <rect x="1" y="5" width="34" height="8" rx="2.5" fill="rgba(231,180,208,0.18)"/>
+            <line x1="1" y1="13" x2="35" y2="13" stroke="#e7b4d0" stroke-width="0.8"/>
+            <rect x="9" y="1" width="3" height="7" rx="1.5" fill="#e7b4d0"/>
+            <rect x="24" y="1" width="3" height="7" rx="1.5" fill="#e7b4d0"/>
+            <g fill="#e7b4d0" opacity="0.9">
+              <rect x="4"  y="17" width="4" height="4" rx="0.8"/>
+              <rect x="11" y="17" width="4" height="4" rx="0.8"/>
+              <rect x="18" y="17" width="4" height="4" rx="0.8"/>
+            </g>
+            <g stroke="#f4efe9" stroke-width="1.2" stroke-linecap="round">
+              <line x1="4.8"  y1="17.8" x2="7.2" y2="20.2"/>
+              <line x1="7.2"  y1="17.8" x2="4.8" y2="20.2"/>
+              <line x1="11.8" y1="17.8" x2="14.2" y2="20.2"/>
+              <line x1="14.2" y1="17.8" x2="11.8" y2="20.2"/>
+              <line x1="18.8" y1="17.8" x2="21.2" y2="20.2"/>
+              <line x1="21.2" y1="17.8" x2="18.8" y2="20.2"/>
+            </g>
+            <g fill="#e7b4d0" opacity="0.2">
+              <rect x="4"  y="24" width="4" height="4" rx="0.8"/>
+              <rect x="11" y="24" width="4" height="4" rx="0.8"/>
+              <rect x="18" y="24" width="4" height="4" rx="0.8"/>
+              <rect x="25" y="24" width="4" height="4" rx="0.8"/>
+              <rect x="25" y="17" width="4" height="4" rx="0.8"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <div class="days-num" style="color:#e7b4d0;">13.8M</div>
+          <div class="days-label"><strong>school days</strong> missed by children per year</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TOTALS -->
+  <div class="bill-totals">
+    <div class="subtotal-row">
+      <span class="subtotal-label">Asthma burden (NY, est.)</span>
+      <span class="subtotal-amount">~$5.7B</span>
+    </div>
+    <div class="subtotal-row">
+      <span class="subtotal-label">Cancer &amp; heart disease (NY, est.)</span>
+      <span class="subtotal-amount">~$22B+</span>
+    </div>
+    <div class="subtotal-row">
+      <span class="subtotal-label">PFAS exposure costs (NY, sourced)</span>
+      <span class="subtotal-amount">$2.7–4.4B</span>
+    </div>
+    <div class="total-divider"></div>
+    <div class="total-row">
+      <span class="total-label">Total annual burden, New York</span>
+      <span class="total-amount">$30B+</span>
+    </div>
+  </div>
+
+  <!-- DUE NOW -->
+  <div class="due-stamp-wrap">
+    <p class="due-note">
+      This cost is largely borne by the residents living nearest the sources of contamination — <strong>disproportionately low-income communities and communities of color</strong> with the fewest resources to absorb it.
+    </p>
+    <div class="due-stamp">
+      <div class="due-stamp-text">DUE: NOW</div>
+      <div class="due-stamp-sub">New York State</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const items = document.querySelectorAll('.line-item, .days-row');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const delay = parseInt(e.target.dataset.delay || 0);
+      setTimeout(() => e.target.classList.add('visible'), delay);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+items.forEach(i => observer.observe(i));
+</script>
+</body>
+</html>

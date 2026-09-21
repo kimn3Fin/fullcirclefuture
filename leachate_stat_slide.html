@@ -47,22 +47,41 @@
     gap: 1.25rem;
   }
 
-  .intro {
-    font-size: clamp(28px, 2.4vw, 34px);
+  .eyebrow {
+    font-size: 11px;
     font-weight: 600;
-    line-height: 1.4;
-    color: #f4efe9;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(244,239,233,0.35);
+  }
+
+  .intro {
+    font-size: clamp(17px, 1.7vw, 22px);
+    font-weight: 300;
+    line-height: 1.6;
+    color: rgba(244,239,233,0.85);
   }
 
   .intro strong {
     font-weight: 600;
-    color: var(--red);
+    color: #f4efe9;
+  }
+
+  .intro a {
+    color: var(--light-blue);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(145,200,228,0.35);
+  }
+
+  .intro a:hover {
+    border-bottom-color: var(--light-blue);
   }
 
   .counter-wrap {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
+    padding-top: 0.25rem;
   }
 
   .counter-label {
@@ -93,17 +112,17 @@
   .right {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
-  /* pool equivalency callout */
-  .pool-callout {
+  /* stat row */
+  .stat-row {
     display: flex;
     flex-direction: column;
     gap: 2px;
   }
 
-  .pool-callout-label {
+  .stat-label {
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -111,7 +130,7 @@
     color: rgba(244,239,233,0.35);
   }
 
-  .pool-callout-number {
+  .stat-number {
     font-size: clamp(28px, 4vw, 48px);
     font-weight: 600;
     color: var(--light-blue);
@@ -119,16 +138,26 @@
     letter-spacing: -0.02em;
   }
 
-  .pool-callout-text {
-    font-size: clamp(12px, 1.4vw, 15px);
+  .stat-number.red {
+    color: var(--red);
+  }
+
+  .stat-text {
+    font-size: clamp(12px, 1.4vw, 14px);
     font-weight: 300;
     color: rgba(244,239,233,0.6);
     line-height: 1.4;
   }
 
-  .pool-callout-text strong {
+  .stat-text strong {
     font-weight: 600;
     color: #f4efe9;
+  }
+
+  /* divider */
+  .divider {
+    height: 1px;
+    background: rgba(244,239,233,0.08);
   }
 
   /* pool grid */
@@ -176,31 +205,37 @@
 
   <!-- LEFT: intro + counter -->
   <div class="left">
+    <p class="eyebrow">New York State · 2019–2023 average</p>
     <p class="intro">
-      In 2024, <strong>36</strong> wastewater treatment plants processed more than
-      <strong>1 million gallons</strong> of PFAS-laden leachate
-      <strong>every single day</strong> — all year long.
-      That's just what we know of.
+      <strong>75 landfills</strong> sent roughly <strong>532 million gallons</strong> of PFAS-laden leachate each year to <strong>48 wastewater treatment plants</strong> — discharging upstream of <strong>36 drinking water intakes</strong> serving nearly <strong>2,000,000 people</strong>. <a href="https://leachateloophole.org/" target="_blank">New York River Watch documented this in detail.</a> What follows is what that pattern looks like statewide.
     </p>
 
     <div class="counter-wrap">
-      <p class="counter-label">Total gallons discharged · 2024</p>
+      <p class="counter-label">Annual gallons discharged · statewide average</p>
       <span class="counter-number" id="counter">0</span>
-      <p class="counter-unit">gallons of PFAS-laden leachate</p>
+      <p class="counter-unit">gallons of PFAS-laden leachate per year</p>
     </div>
   </div>
 
-  <!-- RIGHT: pool equivalency + grid -->
+  <!-- RIGHT: stats + pool grid -->
   <div class="right">
 
-    <div class="pool-callout">
-      <p class="pool-callout-label">That's enough to fill</p>
-      <p class="pool-callout-number" id="poolCount">0</p>
-      <p class="pool-callout-text"><strong>Olympic swimming pools</strong><br>each holding 660,000 gallons</p>
+    <div class="stat-row">
+      <p class="stat-label">That's enough to fill</p>
+      <p class="stat-number" id="poolCount">0</p>
+      <p class="stat-text"><strong>Olympic swimming pools</strong><br>each holding 660,000 gallons</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="stat-row">
+      <p class="stat-label">Upstream of</p>
+      <p class="stat-number red">36</p>
+      <p class="stat-text"><strong>drinking water intakes</strong><br>serving nearly 2,000,000 people</p>
     </div>
 
     <div class="pool-grid-wrap">
-      <p class="pool-grid-label">Each square below represents one pool</p>
+      <p class="pool-grid-label">Each square represents one Olympic pool</p>
       <div class="pools" id="pools"></div>
     </div>
 
@@ -209,7 +244,7 @@
 </div>
 
 <script>
-  const target = 384087821;
+  const target = 532000000;
   const poolSize = 660000;
   const totalPools = Math.floor(target / poolSize);
   const duration = 3000;

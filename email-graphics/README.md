@@ -1,0 +1,1 @@
+Icons for alert emails

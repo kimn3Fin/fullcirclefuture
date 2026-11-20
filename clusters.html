@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Landfills with multiple methane plumes | Full Circle Future</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;700&display=swap" rel="stylesheet">
+<base target="_blank">
+<style>
+  :root {
+    --bg: #F4EFE9; --surface: #FFFFFF; --ink: #2F2A36; --heading: #2A1D3D; --muted: #5C5566;
+    --rule: #E5DDD4; --teal: #0A8574; --teal-ink: #0A8574; --coral: #E6674F; --band: #2A1D3D; --band-ink: #FFFFFF;
+    color-scheme: light;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: Alexandria, "Segoe UI", Arial, Helvetica, sans-serif; font-size: 17px; line-height: 1.65; }
+  a { color: var(--teal-ink); text-underline-offset: 3px; }
+  a:focus-visible, select:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+  .embed .band, .embed footer { display: none; }
+
+  .band { background: var(--band); color: var(--band-ink); }
+  .band-inner { max-width: 960px; margin: 0 auto; padding: 56px 24px 64px; }
+  .org { font-weight: 700; font-size: 16px; color: var(--band-ink); text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
+  .org-mark { width: 22px; height: 22px; border-radius: 50%; border: 4px solid var(--coral); display: inline-block; }
+  h1 { font-size: clamp(32px, 5.5vw, 50px); line-height: 1.1; font-weight: 700; margin: 40px 0 16px; letter-spacing: -0.01em; max-width: 16em; }
+  .lede { font-size: 18px; max-width: 36em; margin: 0; opacity: 0.9; }
+
+  main { max-width: 960px; margin: 0 auto; padding: 0 24px 72px; }
+  .monthbar { background: var(--surface); border: 1px solid var(--rule); border-top: 6px solid var(--coral); margin-top: -32px; padding: 22px 24px; display: flex; gap: 24px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .embed .monthbar { margin-top: 0; }
+  .monthbar h2 { margin: 0; font-size: 26px; line-height: 1.2; color: var(--heading); }
+  .monthbar p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+  .monthbar label { font-size: 14px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+  select { font-family: inherit; font-size: 16px; padding: 10px 12px; border: 1px solid var(--heading); background: var(--surface); color: var(--heading); min-width: 220px; }
+
+  .clusters { list-style: none; margin: 24px 0 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+  .cluster { background: var(--surface); border: 1px solid var(--rule); display: grid; grid-template-columns: 300px 1fr; }
+  .cluster .map { background: #E5DDD4; min-height: 220px; position: relative; }
+  .cluster.no-map { grid-template-columns: 1fr; }
+  .cluster.no-map .map { display: none; }
+  td a { word-break: break-all; }
+  .cluster .map img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cluster .map span { position: absolute; left: 10px; bottom: 10px; background: rgba(42,29,61,.85); color: #fff; font-size: 12px; padding: 3px 8px; }
+  .cluster .body { padding: 20px 24px; }
+  .cluster h3 { margin: 0; font-size: 21px; line-height: 1.3; color: var(--heading); }
+  .meta { margin: 4px 0 14px; color: var(--muted); font-size: 15px; }
+  .count { display: inline-block; background: var(--coral); color: #2A1D3D; font-weight: 700; font-size: 14px; padding: 2px 10px; margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th { text-align: left; font-weight: 500; color: var(--muted); font-size: 13px; padding: 0 0 6px; border-bottom: 1px solid var(--rule); }
+  th:last-child, td:last-child { text-align: right; }
+  td { padding: 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  td.nq { color: var(--muted); font-style: italic; }
+  .wit { display: inline-block; margin-top: 12px; font-size: 15px; }
+  .empty, .error { background: var(--surface); border: 1px solid var(--rule); padding: 24px; margin-top: 24px; }
+
+  .note { margin: 20px 0 0; font-size: 15px; color: var(--muted); max-width: 46em; }
+  .note p { margin: 0 0 8px; }
+
+  section.context { padding-top: 56px; }
+  section.context h2 { font-size: clamp(26px, 4vw, 32px); line-height: 1.2; color: var(--heading); margin: 0 0 20px; padding-bottom: 10px; border-bottom: 2px solid var(--heading); }
+  section.context p { max-width: 40em; margin: 0 0 16px; }
+  ul.leaks { list-style: none; margin: 8px 0 20px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  ul.leaks li { display: flex; gap: 16px; align-items: center; background: var(--surface); border: 1px solid var(--rule); padding: 14px 16px; font-size: 15px; line-height: 1.5; }
+  ul.leaks strong { color: var(--heading); }
+  .leak-icon { flex: 0 0 72px; width: 72px; height: 72px; background: #F4EFE9; display: block; padding: 4px; }
+  .leak-icon svg { width: 100%; height: 100%; display: block; }
+  ul.rules { list-style: none; margin: 0 0 20px; padding: 0; }
+  ul.rules li { position: relative; padding: 10px 0 10px 26px; border-bottom: 1px solid var(--rule); max-width: 40em; }
+  ul.rules li::before { content: ""; position: absolute; left: 4px; top: 21px; width: 10px; height: 10px; background: var(--coral); border-radius: 50%; }
+  ul.rules strong { color: var(--heading); }
+  .cta { display: inline-block; background: var(--heading); color: var(--bg); padding: 14px 22px; font-weight: 700; text-decoration: none; }
+  .cta:hover { background: var(--teal); color: #FFFFFF; }
+  .action-title { color: var(--teal-ink) !important; }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .action { padding: 22px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; }
+  .action p { margin: 0 !important; font-size: 16px; line-height: 1.55; }
+  .action a { display: block; text-align: center; padding: 13px 16px; font-weight: 700; text-decoration: none; }
+  .action-primary { background: #2A1D3D; color: #FFFFFF; }
+  .action-primary a { background: #FFFFFF; color: #2A1D3D; }
+  .action-goal { background: #E6674F; color: #2A1D3D; }
+  .action-goal a { background: #2A1D3D; color: #FFFFFF; }
+  footer { border-top: 1px solid var(--rule); max-width: 960px; margin: 0 auto; padding: 24px 24px 48px; font-size: 14px; color: var(--muted); }
+
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #1C1526; --surface: #251D31; --ink: #E9E3EF; --heading: #F4EFE9; --muted: #B3A9BF; --rule: #3A3047; --teal-ink: #5CCBBA; --band: #0F0A16; --band-ink: #F4EFE9; color-scheme: dark; }
+    .cta { color: #1C1526; }
+  }
+  @media (max-width: 720px) {
+    body { font-size: 16px; }
+    .cluster { grid-template-columns: 1fr; }
+    .cluster .map { min-height: 200px; }
+    ul.leaks, .actions { grid-template-columns: 1fr; }
+    select { min-width: 0; width: 100%; }
+    .monthbar label { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header class="band">
+  <div class="band-inner">
+    <a class="org" href="https://www.fullcirclefuture.org"><span class="org-mark" aria-hidden="true"></span>Full Circle Future</a>
+    <h1>Landfills with multiple methane plumes</h1>
+    <p class="lede">Sometimes Carbon Mapper detects more than one methane plume at the same landfill in a single satellite pass. These are the landfills where that happened each month.</p>
+  </div>
+</header>
+
+<main>
+  <div class="monthbar">
+    <div>
+      <h2 id="month-title">Loading clusters…</h2>
+      <p id="month-summary"></p>
+    </div>
+    <label>Show month
+      <select id="month-select" aria-label="Choose a month"></select>
+    </label>
+  </div>
+
+  <div id="cluster-list" aria-live="polite"></div>
+
+  <div class="note">
+    <p>Each plume’s emission rate is listed separately. When plumes are very close together, their emissions can’t always be reliably separated, so we don’t add them together.</p>
+    <p>“Not yet quantified” means Carbon Mapper hasn’t estimated a rate for that plume yet. It doesn’t mean the plume was small.</p>
+    <p><a href="https://www.fullcirclefuture.org/methane-alerts-faq#about-detections">About these detections</a>: what satellites can and can’t see.</p>
+  </div>
+
+  <section class="context" id="multiple-plumes">
+    <h2>Why multiple plumes matter</h2>
+    <p>Landfills rarely leak from just one spot. Methane builds up throughout the buried waste and escapes wherever it finds a path. Common sources include:</p>
+    <ul class="leaks">
+      <li><span class="leak-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" aria-hidden="true" focusable="false"><path d="M20 128 Q80 46 140 128 Z" fill="#BFDDD7" stroke="#0A8574" stroke-width="6" stroke-linejoin="round"/><line x1="12" y1="130" x2="148" y2="130" stroke="#0A8574" stroke-width="7" stroke-linecap="round"/><polyline points="70,82 80,94 71,104 82,116 76,126" fill="none" stroke="#2A1D3D" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><path d="M70 72 q-7 -10.0 0 -20.0 q7 -10.0 0 -20.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/><path d="M90 66 q-7 -8.5 0 -17.0 q7 -8.5 0 -17.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/></svg></span><span><strong>Cracks and gaps in cover soil</strong>, especially on steep side slopes</span></li>
+      <li><span class="leak-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" aria-hidden="true" focusable="false"><path d="M20 128 Q60 52 92 70 L104 128 Z" fill="#BFDDD7" stroke="#0A8574" stroke-width="6" stroke-linejoin="round"/><path d="M92 70 Q126 86 140 128 L104 128 Z" fill="#7DBFB2" stroke="#0A8574" stroke-width="6" stroke-linejoin="round"/><circle cx="112" cy="104" r="7" fill="#2A1D3D"/><rect x="118" y="112" width="12" height="10" rx="2" fill="#E6674F"/><circle cx="104" cy="118" r="6" fill="#FFFFFF" stroke="#2A1D3D" stroke-width="3"/><rect x="100" y="90" width="10" height="9" rx="2" fill="#FFFFFF" stroke="#2A1D3D" stroke-width="3"/><line x1="12" y1="130" x2="148" y2="130" stroke="#0A8574" stroke-width="7" stroke-linecap="round"/><path d="M112 72 q-7 -9.5 0 -19.0 q7 -9.5 0 -19.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/><path d="M130 82 q-7 -7.5 0 -15.0 q7 -7.5 0 -15.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/></svg></span><span><strong>The active working face</strong>, where fresh waste is exposed each day</span></li>
+      <li><span class="leak-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" aria-hidden="true" focusable="false"><path d="M20 128 Q80 46 140 128 Z" fill="#BFDDD7" stroke="#0A8574" stroke-width="6" stroke-linejoin="round"/><line x1="12" y1="130" x2="148" y2="130" stroke="#0A8574" stroke-width="7" stroke-linecap="round"/><line x1="46" y1="92" x2="46" y2="126" stroke="#0A8574" stroke-width="7"/><rect x="38" y="84" width="16" height="9" rx="2" fill="#0A8574"/><line x1="66" y1="72" x2="66" y2="126" stroke="#0A8574" stroke-width="7"/><rect x="58" y="64" width="16" height="9" rx="2" fill="#0A8574"/><path d="M92 76 Q118 92 130 124 L92 124 Z" fill="none" stroke="#E6674F" stroke-width="4" stroke-dasharray="7 6" stroke-linejoin="round"/><path d="M104 62 q-7 -9.0 0 -18.0 q7 -9.0 0 -18.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/><path d="M122 74 q-7 -7.5 0 -15.0 q7 -7.5 0 -15.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/></svg></span><span><strong>Newer areas without gas collection.</strong> Federal rules give operators up to five years after waste is placed before collection is required in active areas.</span></li>
+      <li><span class="leak-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" aria-hidden="true" focusable="false"><line x1="12" y1="130" x2="148" y2="130" stroke="#0A8574" stroke-width="7" stroke-linecap="round"/><rect x="64" y="64" width="18" height="64" rx="3" fill="#BFDDD7" stroke="#0A8574" stroke-width="6"/><rect x="82" y="78" width="44" height="14" rx="3" fill="#BFDDD7" stroke="#0A8574" stroke-width="6"/><circle cx="73" cy="48" r="16" fill="none" stroke="#0A8574" stroke-width="6"/><line x1="73" y1="32" x2="73" y2="64" stroke="#0A8574" stroke-width="5"/><line x1="57" y1="48" x2="89" y2="48" stroke="#0A8574" stroke-width="5"/><path d="M88 76 l6 -6 m0 22 l6 6" stroke="#2A1D3D" stroke-width="4" stroke-linecap="round"/><path d="M100 72 q-7 -8.5 0 -17.0 q7 -8.5 0 -17.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/><path d="M116 74 q-7 -7.5 0 -15.0 q7 -7.5 0 -15.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/></svg></span><span><strong>Damaged or poorly tuned gas wells</strong> and wellheads</span></li>
+      <li><span class="leak-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" aria-hidden="true" focusable="false"><line x1="12" y1="130" x2="148" y2="130" stroke="#0A8574" stroke-width="7" stroke-linecap="round"/><rect x="14" y="74" width="132" height="22" rx="4" fill="#BFDDD7" stroke="#0A8574" stroke-width="6"/><rect x="70" y="66" width="20" height="38" rx="3" fill="#7DBFB2" stroke="#0A8574" stroke-width="6"/><polyline points="92,74 86,82 94,88" fill="none" stroke="#2A1D3D" stroke-width="4" stroke-linejoin="round"/><path d="M80 108 q-7 10 0 14 q7 -4 0 -14 z" fill="#0A8574"/><path d="M96 62 q-7 -9.0 0 -18.0 q7 -9.0 0 -18.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/><path d="M112 64 q-7 -7.5 0 -15.0 q7 -7.5 0 -15.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/></svg></span><span><strong>Leaking pipes and leachate system parts</strong> like sumps and cleanouts</span></li>
+      <li><span class="leak-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" aria-hidden="true" focusable="false"><line x1="12" y1="130" x2="148" y2="130" stroke="#0A8574" stroke-width="7" stroke-linecap="round"/><rect x="68" y="58" width="22" height="70" rx="3" fill="#BFDDD7" stroke="#0A8574" stroke-width="6"/><rect x="60" y="50" width="38" height="10" rx="3" fill="#0A8574"/><path d="M79 46 C58 32 68 14 79 2 C90 14 100 32 79 46 Z" fill="none" stroke="#0A8574" stroke-width="4" stroke-dasharray="6 6"/><path d="M104 48 q-7 -8.5 0 -17.0 q7 -8.5 0 -17.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/><path d="M118 58 q-7 -7.0 0 -14.0 q7 -7.0 0 -14.0" fill="none" stroke="#E6674F" stroke-width="6" stroke-linecap="round"/></svg></span><span><strong>Flares or engines that are offline</strong>, letting gas escape that should be destroyed</span></li>
+    </ul>
+  </section>
+
+  <section class="context" id="better-rules">
+    <h2>How better rules can fix this</h2>
+    <p>These leaks are preventable. Stronger landfill rules could:</p>
+    <ul class="rules">
+      <li>Require gas collection to be installed <strong>sooner</strong> in new waste areas</li>
+      <li>Require <strong>more frequent, more sensitive</strong> monitoring for leaks</li>
+      <li>Require operators to <strong>investigate and repair</strong> when satellites or aircraft detect large plumes. EPA’s Super Emitter Program covers oil and gas, but not landfills.</li>
+      <li>Set <strong>stronger standards</strong> for cover materials</li>
+    </ul>
+    <a class="cta" href="https://www.fullcirclefuture.org/landfill-model-rules">Read our Model Rules for Landfills</a>
+  </section>
+
+  <section class="context" id="take-action">
+    <h2 class="action-title">What can I do?</h2>
+    <div class="actions">
+      <div class="action action-primary">
+        <p>Email your elected officials and encourage them to support solutions that reduce landfill pollution.</p>
+        <a href="https://secure.everyaction.com/v1RWSAqd30eAhkFWXBBNFg2">Take action now</a>
+      </div>
+      <div class="action action-goal">
+        <p>Live near or affected by a landfill? Join Grassroots Organizers for Accountable Landfills (GOAL).</p>
+        <a href="https://www.fullcirclefuture.org/goal">Learn about GOAL</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Plume data and imagery: <a href="https://carbonmapper.org">Carbon Mapper</a>. <span id="updated"></span><br>
+  Full Circle Future, <a href="https://www.fullcirclefuture.org">www.fullcirclefuture.org</a>
+</footer>
+
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var embedded = params.get('embed') === '1';
+  if (embedded) document.documentElement.classList.add('embed');
+
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var listEl = document.getElementById('cluster-list');
+  var selectEl = document.getElementById('month-select');
+  var data;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function fmtDate(d) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || '');
+    return m ? MONTHS[+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1] : '';
+  }
+  function fmtRate(n) { return n.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
+  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
+  function monthKey(date) { return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0'); }
+
+  function postHeight() {
+    if (!embedded || window.parent === window) return;
+    window.parent.postMessage({ type: 'fcf-cluster-height', height: document.documentElement.scrollHeight }, '*');
+  }
+
+  function render(month) {
+    var m = data.months.filter(function (x) { return x.month === month; })[0];
+    var now = new Date();
+    var soFar = month === monthKey(now) ? ' (so far)' : '';
+    document.getElementById('month-title').textContent = (m ? m.label : month) + soFar;
+    if (!m || !m.clusters.length) {
+      document.getElementById('month-summary').textContent = '';
+      listEl.innerHTML = '<div class="empty">No landfills had multiple plumes published this month.</div>';
+      postHeight();
+      return;
+    }
+    var s = m.summary;
+    document.getElementById('month-summary').textContent =
+      plural(s.clusters, 'landfill', 'landfills') + ' with multiple plumes, ' +
+      plural(s.plumes, 'plume', 'plumes') + ' in total, across ' + plural(s.states, 'state', 'states') + '.';
+
+    listEl.innerHTML = '<ul class="clusters">' + m.clusters.map(function (c) {
+      var rows = c.plumes.map(function (p) {
+        var rate = p.rate ? fmtRate(p.rate) + ' ± ' + fmtRate(p.uncertainty) + ' kg/hr' : 'Not yet quantified';
+        return '<tr><td><a href="' + esc(p.portal) + '">' + esc(p.id) + '</a></td>' +
+               '<td class="' + (p.rate ? '' : 'nq') + '">' + rate + '</td></tr>';
+      }).join('');
+      var where = [c.state, fmtDate(c.observed), c.platform].filter(Boolean).map(esc).join(', ');
+      var img = c.image
+        ? '<img src="' + esc(c.image) + '" alt="Satellite image of methane plumes at ' + esc(c.landfill) + '" loading="lazy">' +
+          (c.image_is_cluster_map ? '' : '<span>Largest plume shown</span>')
+        : '';
+      return '<li class="cluster' + (c.image ? '' : ' no-map') + '"><div class="map">' + img + '</div><div class="body">' +
+        '<span class="count">' + plural(c.plume_count, 'plume', 'plumes') + ' in one pass</span>' +
+        '<h3>' + esc(c.landfill) + '</h3>' +
+        '<p class="meta">' + where + (c.owner ? '<br>Owner: ' + esc(c.owner) : '') + '</p>' +
+        '<table><thead><tr><th scope="col">Plume (opens in Carbon Mapper)</th><th scope="col">Emission rate</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+        (c.wit_url ? '<a class="wit" href="' + esc(c.wit_url) + '">View this landfill on Waste Impact Tracker</a>' : '') +
+        '</div></li>';
+    }).join('') + '</ul>';
+    listEl.querySelectorAll('img').forEach(function (im) {
+      im.addEventListener('load', postHeight);
+      im.addEventListener('error', function () { im.closest('.cluster').classList.add('no-map'); postHeight(); });
+    });
+    postHeight();
+  }
+
+  function start(json) {
+    data = json;
+    if (!data.months || !data.months.length) {
+      document.getElementById('month-title').textContent = 'No clusters yet';
+      listEl.innerHTML = '<div class="empty">No landfills with multiple plumes have been published yet.</div>';
+      return;
+    }
+    var current = monthKey(new Date());
+    selectEl.innerHTML = data.months.map(function (m) {
+      return '<option value="' + m.month + '">' + m.label + (m.month === current ? ' (so far)' : '') + '</option>';
+    }).join('');
+    var d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - 1);
+    var wanted = params.get('month') || monthKey(d);
+    var has = data.months.some(function (m) { return m.month === wanted; });
+    var month = has ? wanted : data.months[0].month;
+    selectEl.value = month;
+    render(month);
+    if (data.updated) document.getElementById('updated').textContent = 'List updated ' + fmtDate(data.updated) + '.';
+    selectEl.addEventListener('change', function () { render(selectEl.value); });
+  }
+
+  if (window.CLUSTER_DATA) { start(window.CLUSTER_DATA); }
+  else {
+    fetch('data/clusters.json', { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(start)
+      .catch(function () {
+        document.getElementById('month-title').textContent = 'Clusters couldn’t load';
+        listEl.innerHTML = '<div class="error">The cluster list couldn’t load. Try refreshing the page.</div>';
+        postHeight();
+      });
+  }
+  if (window.ResizeObserver) new ResizeObserver(postHeight).observe(document.body);
+  window.addEventListener('load', postHeight);
+})();
+</script>
+</body>
+</html>

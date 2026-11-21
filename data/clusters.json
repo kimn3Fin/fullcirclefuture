@@ -1,13 +1,13 @@
 {
- "updated": "2026-11-20",
+ "updated": "2026-11-21",
  "months": [
   {
    "month": "2026-11",
    "label": "November 2026",
    "summary": {
-    "clusters": 23,
-    "plumes": 46,
-    "states": 14
+    "clusters": 25,
+    "plumes": 50,
+    "states": 16
    },
    "clusters": [
     {
@@ -533,6 +533,35 @@
      ]
     },
     {
+     "scene": "tan20261021t175709c03s4001",
+     "landfill": "Elkhart County LF",
+     "state": "Indiana",
+     "owner": "County of Elkhart, IN",
+     "wit_url": "https://www.wasteimpacttracker.org/#/state/IN?landfillId=852",
+     "observed": "2026-10-21",
+     "platform": "Tanager",
+     "image": "https://res.cloudinary.com/o592cgd0/image/fetch/l_fetch:aHR0cHM6Ly9hcGkuY2FyYm9ubWFwcGVyLm9yZy9hcGkvdjEvY2F0YWxvZy9hc3NldC9sM2EtdmlzLWNoNC1tZmEtdjNmLzIwMjYvMTAvMjEvdGFuMjAyNjEwMjF0MTc1NzA5YzAzczQwMDEtQy90YW4yMDI2MTAyMXQxNzU3MDljMDNzNDAwMS1DX2wzYS12aXMtY2g0LW1mYS12M2ZfcGx1bWUucG5n/c_scale,w_600,h_600/fl_layer_apply,g_north_west,x_276,y_60/f_jpg,q_auto:good/https%3A%2F%2Fapi.mapbox.com%2Fstyles%2Fv1%2Fmapbox%2Fsatellite-streets-v12%2Fstatic%2F%5B-86.011331%2C41.621426%2C-85.933035%2C41.657997%5D%2F576x360%402x%3Faccess_token%3Dpk.eyJ1Ijoia2ltbjMiLCJhIjoiY211bzZmc3prMDJkZjM0b2Jjb3NoMHl1aiJ9.jAd3KA1-HUuY4iFzdH0CWA",
+     "image_is_cluster_map": false,
+     "plume_count": 2,
+     "largest_rate": 591.1,
+     "plumes": [
+      {
+       "id": "tan20261021t175709c03s4001-C",
+       "rate": 591.1,
+       "uncertainty": 446.5,
+       "published": "2026-11-20",
+       "portal": "https://data.carbonmapper.org/?plume_id=tan20261021t175709c03s4001-C"
+      },
+      {
+       "id": "tan20261021t175709c03s4001-E",
+       "rate": 198.1,
+       "uncertainty": 157.3,
+       "published": "2026-11-20",
+       "portal": "https://data.carbonmapper.org/?plume_id=tan20261021t175709c03s4001-E"
+      }
+     ]
+    },
+    {
      "scene": "tan20261014t180522c99s4001",
      "landfill": "Woodside SLF & Recycling Center",
      "state": "Louisiana",
@@ -558,6 +587,35 @@
        "uncertainty": 334.3,
        "published": "2026-11-13",
        "portal": "https://data.carbonmapper.org/?plume_id=tan20261014t180522c99s4001-B"
+      }
+     ]
+    },
+    {
+     "scene": "tan20261021t175709c03s4001",
+     "landfill": "Westside Recycling and Disposal Facility",
+     "state": "Michigan",
+     "owner": "WM",
+     "wit_url": "https://www.wasteimpacttracker.org/#/state/MI?landfillId=1226",
+     "observed": "2026-10-21",
+     "platform": "Tanager",
+     "image": "https://res.cloudinary.com/o592cgd0/image/fetch/l_fetch:aHR0cHM6Ly9hcGkuY2FyYm9ubWFwcGVyLm9yZy9hcGkvdjEvY2F0YWxvZy9hc3NldC9sM2EtdmlzLWNoNC1tZmEtdjNmLzIwMjYvMTAvMjEvdGFuMjAyNjEwMjF0MTc1NzA5YzAzczQwMDEtQi90YW4yMDI2MTAyMXQxNzU3MDljMDNzNDAwMS1CX2wzYS12aXMtY2g0LW1mYS12M2ZfcGx1bWUucG5n/c_scale,w_605,h_600/fl_layer_apply,g_north_west,x_273,y_60/f_jpg,q_auto:good/https%3A%2F%2Fapi.mapbox.com%2Fstyles%2Fv1%2Fmapbox%2Fsatellite-streets-v12%2Fstatic%2F%5B-85.719809%2C41.909713%2C-85.639774%2C41.946929%5D%2F576x360%402x%3Faccess_token%3Dpk.eyJ1Ijoia2ltbjMiLCJhIjoiY211bzZmc3prMDJkZjM0b2Jjb3NoMHl1aiJ9.jAd3KA1-HUuY4iFzdH0CWA",
+     "image_is_cluster_map": false,
+     "plume_count": 2,
+     "largest_rate": 426.9,
+     "plumes": [
+      {
+       "id": "tan20261021t175709c03s4001-B",
+       "rate": 426.9,
+       "uncertainty": 186.9,
+       "published": "2026-11-20",
+       "portal": "https://data.carbonmapper.org/?plume_id=tan20261021t175709c03s4001-B"
+      },
+      {
+       "id": "tan20261021t175709c03s4001-F",
+       "rate": 113.8,
+       "uncertainty": 55.3,
+       "published": "2026-11-20",
+       "portal": "https://data.carbonmapper.org/?plume_id=tan20261021t175709c03s4001-F"
       }
      ]
     },

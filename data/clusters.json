@@ -1,15 +1,51 @@
 {
- "updated": "2026-11-21",
+ "updated": "2026-11-22",
  "months": [
   {
    "month": "2026-11",
    "label": "November 2026",
    "summary": {
-    "clusters": 25,
-    "plumes": 50,
-    "states": 16
+    "clusters": 26,
+    "plumes": 53,
+    "states": 17
    },
    "clusters": [
+    {
+     "scene": "tan20261022t185130c71s4001",
+     "landfill": "Oklahoma City LF",
+     "state": "Oklahoma",
+     "owner": "Waste Connections",
+     "wit_url": "https://www.wasteimpacttracker.org/#/state/OK?landfillId=1899",
+     "observed": "2026-10-22",
+     "platform": "Tanager",
+     "image": "https://res.cloudinary.com/o592cgd0/image/fetch/l_fetch:aHR0cHM6Ly9hcGkuY2FyYm9ubWFwcGVyLm9yZy9hcGkvdjEvY2F0YWxvZy9hc3NldC9sM2EtdmlzLWNoNC1tZmEtdjNmLzIwMjYvMTAvMjIvdGFuMjAyNjEwMjJ0MTg1MTMwYzcxczQwMDEtRS90YW4yMDI2MTAyMnQxODUxMzBjNzFzNDAwMS1FX2wzYS12aXMtY2g0LW1mYS12M2ZfcGx1bWUucG5n/c_scale,w_597,h_600/fl_layer_apply,g_north_west,x_277,y_60/f_jpg,q_auto:good/https%3A%2F%2Fapi.mapbox.com%2Fstyles%2Fv1%2Fmapbox%2Fsatellite-streets-v12%2Fstatic%2F%5B-97.705867%2C35.423468%2C-97.569101%2C35.493094%5D%2F576x360%402x%3Faccess_token%3Dpk.eyJ1Ijoia2ltbjMiLCJhIjoiY211bzZmc3prMDJkZjM0b2Jjb3NoMHl1aiJ9.jAd3KA1-HUuY4iFzdH0CWA",
+     "image_is_cluster_map": false,
+     "plume_count": 3,
+     "largest_rate": 2380.7,
+     "plumes": [
+      {
+       "id": "tan20261022t185130c71s4001-C",
+       "rate": null,
+       "uncertainty": null,
+       "published": "2026-11-21",
+       "portal": "https://data.carbonmapper.org/?plume_id=tan20261022t185130c71s4001-C"
+      },
+      {
+       "id": "tan20261022t185130c71s4001-D",
+       "rate": null,
+       "uncertainty": null,
+       "published": "2026-11-21",
+       "portal": "https://data.carbonmapper.org/?plume_id=tan20261022t185130c71s4001-D"
+      },
+      {
+       "id": "tan20261022t185130c71s4001-E",
+       "rate": 2380.7,
+       "uncertainty": 370.9,
+       "published": "2026-11-21",
+       "portal": "https://data.carbonmapper.org/?plume_id=tan20261022t185130c71s4001-E"
+      }
+     ]
+    },
     {
      "scene": "tan20261012t175129c74s4001",
      "landfill": "Pine Bluff LF",
